@@ -7,16 +7,21 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://spacezyx.github.io/tags/%E5%8D%9A%E5%AE%A2/index.html">
+<meta name="description" content="​		随机优化课程要求提交一篇课程报告，内容是对一些优化方法的理解。我选择了随机梯度下降算法，发现SGD虽然常用，但好像还没有对它进行过比调库和考试更深层次的思考，因此把课程报告的内容做成了我的第一篇技术类型的博客。 ​		传统的梯度下降是一种基于导数的优化方法，用于找到一个函数的局部最小值。在机器学习中，我们会设定一个损失函数，用以表征模型推理结果和实际的差距，找这个函数最小值的过程也就是找到最">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于随机梯度下降的思考">
+<meta property="og:url" content="https://spacezyx.github.io/2024/03/07/%E5%85%B3%E4%BA%8E%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%9A%84%E6%80%9D%E8%80%83/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="​		随机优化课程要求提交一篇课程报告，内容是对一些优化方法的理解。我选择了随机梯度下降算法，发现SGD虽然常用，但好像还没有对它进行过比调库和考试更深层次的思考，因此把课程报告的内容做成了我的第一篇技术类型的博客。 ​		传统的梯度下降是一种基于导数的优化方法，用于找到一个函数的局部最小值。在机器学习中，我们会设定一个损失函数，用以表征模型推理结果和实际的差距，找这个函数最小值的过程也就是找到最">
 <meta property="og:locale">
+<meta property="article:published_time" content="2024-03-07T14:07:29.000Z">
+<meta property="article:modified_time" content="2024-03-07T14:14:06.490Z">
 <meta property="article:author" content="阿曾">
+<meta property="article:tag" content="博客">
 <meta name="twitter:card" content="summary">
 
 
-<title >Hexo</title>
+<title >关于随机梯度下降的思考</title>
 
 <!-- Favicon -->
 
@@ -59,7 +64,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["Explorer"],"theme_version":"2.1.10","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/img/avatar.jpg","icon16":"/img/avatar.jpg","icon32":"/img/avatar.jpg","appleTouchIcon":"/img/avatar.jpg","webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"","prefix":"本站已运行"},"creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":false,"isHome":false,"postUpdate":"2024-03-07 22:14:08"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-03-07 22:14:06"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.1.10" id="trm-switch-style">
@@ -204,10 +209,10 @@
                     <!-- banner title -->
                     <div class="trm-banner-text ">
                         <div class="trm-label trm-mb-20">
-                            The article archive
+                            NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            云间连下榻，<br>天上接行杯。
+                            关于随机梯度下降的思考
                         </h1>
 
                         
@@ -217,7 +222,7 @@
                                 </li>
                                 <li>
                                     <span>
-                                        tags
+                                        2024
                                     </span>
                                 </li>
                             </ul>
@@ -319,79 +324,75 @@
             
             <div class="trm-page-content col-lg-8">
                 <div id="trm-content" class="trm-content">
-                    <div class="row">
-    <div class="col-lg-12">
-        <div class="trm-card">
-            <div style="padding: 0 20px;">
-                
-                    <ul class="row trm-tag-list trm-list" itemprop="keywords"><li class="col-lg-4 trm-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a><span class="tag-list-count">2</span></li></ul>
-                
-            </div>
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            03/07
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            22:14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            阿曾
         </div>
     </div>
 </div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <p>​		随机优化课程要求提交一篇课程报告，内容是对一些优化方法的理解。我选择了随机梯度下降算法，发现SGD虽然常用，但好像还没有对它进行过比调库和考试更深层次的思考，因此把课程报告的内容做成了我的第一篇技术类型的博客。</p>
+<p>​		传统的梯度下降是一种基于导数的优化方法，用于找到一个函数的局部最小值。在机器学习中，我们会设定一个损失函数，用以表征模型推理结果和实际的差距，找这个函数最小值的过程也就是找到最优的模型参数，最小化推理结果和实际差距的过程。传统的梯度下降算法会计算损失函数对所有样本的梯度来更新模型参数。然而当数据集非常庞大时，这样的计算将会耗费大量的时间和资源，因为每一次参数更新都需要遍历整个数据集。为了解决这个问题，SGD在传统的梯度下降中引入了随机性：在每次迭代中，只使用一个样本或一小部分样本来估计梯度，然后根据这个估计的梯度来更新模型参数。SGD虽然高效且可扩展，但也存在一些挑战。</p>
+<p>​		首先是对数据分布的敏感性。在机器学习中，SGD是一种基本的优化方法，它基于一个简单的假设：虽然每次迭代只使用了部分样本的梯度信息，但这些样本的梯度估计能够对整体梯度的方向提供足够的信息，使得模型能够朝着损失函数的最小值方向移动。在一个分布不会过于悬殊的数据集上，SGD可以表现出良好的性能；但当训练数据的分布不能满足上述假设时，SGD可能会陷入反复震荡或停滞状态。</p>
+<p>​		其次，SGD的性能受到许多因素的影响，包括学习率、批量大小、动量等超参数的选择。学习率决定了参数更新的步长，过大的学习率可能导致震荡或发散，而过小的学习率则可能导致收敛速度过慢；批量大小决定了每次迭代中使用的样本数量，较小的批量大小可以使参数更新更加频繁，但也增加了噪声，而较大的批量大小则可以减少噪声，但可能导致收敛速度变慢；动量则是通过考虑之前的梯度信息，使参数更新更加平滑，从而加速收敛过程。为了让SGD稳定高效收敛，往往需要反复试验确定适用于问题的超参。</p>
+<p>​		此外，由于SGD是一种局部优化方法，在每次迭代中SGD只考虑单个样本或一个小批量样本的梯度信息，并根据该信息来更新模型参数。这种局部性质意味着SGD可能会陷入局部最优解而无法找到全局最优解。尤其是在损失函数高度非凸或存在鞍点或平坦区域的情况下，SGD可能会在某个局部最优解处停滞，从而无法找到最优的解。</p>
+<p>​		最后，在处理稀疏数据时，SGD可能会遇到困难。稀疏数据意味着大多数特征都是零，而只有少数特征具有非零值，这意味着许多特征对模型的预测贡献较小或不存在。这样的情况下，SGD可能会在训练过程中对所有特征进行更新，导致模型参数的稀疏性降低，增加了模型的复杂度。并且，由于稀疏数据中大多数特征都是零，因此梯度的估计可能不够准确，导致参数更新的方向和速度不稳定，从而SGD的收敛速度较慢，需要更多的迭代次数才能达到收敛；或由于特征的稀疏性，SGD在更新模型参数时也没有考虑到特征之间的相关性和重要性，从而导致模型过拟合。</p>
+<p>​		对于SGD存在的这些问题，在机器学习应用SGD时也有一些解决方法。比如通过在训练之前对数据进行标准化和归一化确保数据分布更加均匀和稳定、针对不平衡的数据分布采用样本权重调整对样本进行加权，使得模型更加关注罕见类别的样本解决对数据分布敏感的问题；或通过采用如Adam、RMSProp等自适应学习率方法减少对学习率的调整需求或采用自动调参技术，如网格搜索、随机搜索或者基于贝叶斯优化的方法来搜索最佳的超参数组合；对于陷入局部最优解问题，则可以通过随机重启，也就是定期重新初始化参数来跳出局部最优解，从而避免陷入局部最优解；采用特征选择方法，如L1正则化（Lasso）或基于树的特征选择方法减少不相关或不重要的特征对模型的影响处理稀疏矩阵带来的特征提取问题。</p>
+<p>​		这些对SGD的调整方法在实际中也有很多应用，对于SGD带来的局部最优解问题，我认为能通过上述方法解决当然很好，但当由于计算成本、收敛速度、性能等原因无法完全解决局部最优解问题时，SGD方法也未必全然无用。尽管SGD容易受到局部最优解的影响，但局部最优解并不总是坏事。在实际应用中，我们往往更关心的是找到一个在实践中表现良好的解，而不是全局最优解。很多时候全局最优解在复杂的现实世界问题中是难以获得的，甚至可能不存在，而局部最优解虽然可能让模型在训练数据上没有达到全局最优的性能，但它并不意味着模型在实际应用中表现不佳。在一些情况下，局部最优解可能更适合于特定的任务和数据集，并且在泛化到未知数据时表现良好。并且，接受局部最优解通常让模型具有更好的计算性能，比如控制了模型的复杂度、避免了模型的过拟合。因此在搜索最优解时，也需要考虑和模型性能及泛化能力的折中。</p>
 
-<!-- history -->
+</article>
+    
+    
 
-<div class="row">
+</div>
+<div class="trm-post-next-prev row">
     <div class="col-lg-12">
         <!-- title -->
         <h5 class="trm-title-with-divider">
-            
-                博客
-            
-            <span data-number="01"></span>
+            其他文章
+            <span data-number="02"></span>
         </h5>
     </div>
-    <div class="col-lg-12">
-        <!-- timeline -->
-        <div class="trm-timeline">
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
             
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-a trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/03/07/%E5%85%B3%E4%BA%8E%E9%9A%8F%E6%9C%BA%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%9A%84%E6%80%9D%E8%80%83/" class="trm-anima-link">
-                                    关于随机梯度下降的思考
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-a trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/03/07/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/" class="trm-anima-link">
-                                    我的第一篇博客
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
+            <a class="trm-op-top trm-anima-link" href="/2024/03/07/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E5%8D%9A%E5%AE%A2/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/img/block.jpg">
+                </span>
+                <h6 class="trm-op-title">我的第一篇博客</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/07</li>
+                <li>10:56</li>
+                <li>随笔</li>
+            </ul>
         </div>
-        <!-- timeline end -->
     </div>
 </div>
+    
+</div>
 
-<!-- history end -->
-
-
-    <div class="trm-pagination">
-        <span class="page-number current">1</span>
-    </div>
-
-
+    
 
 
 
@@ -435,6 +436,10 @@
 <div class="trm-fixed-container">
     
     
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
     
     <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
         <i class="iconfont fas fa-arrow-up"></i>
@@ -468,6 +473,10 @@
     
 
     <!-- 评论插件 -->
+    
+        
+
+        
     
 
 
