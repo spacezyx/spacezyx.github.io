@@ -7,16 +7,24 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zeng">
-<meta property="og:url" content="https://spacezyx.github.io/tags/%E5%8D%9A%E5%AE%A2/index.html">
+<meta name="description" content="GAMES002 图形学基础研发工具 GAMES真的超级良心课程，对初学者极其友好。这门课是一些基础工具的介绍，前面的Linux&#x2F;Shell这类就直接跳过了，只记录了和我需要做的点云相关的内容。 几何处理软件：CloudCompare&#x2F;MeshLab&#x2F;Open3D CloudCompare：https:&#x2F;&#x2F;www.cloudcompare.org&#x2F;  点云处理 开源软件(C++) 图形化界面 底层">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAMES002-图形学研发基础工具">
+<meta property="og:url" content="https://spacezyx.github.io/2024/10/28/GAMES002-%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%A0%94%E5%8F%91%E5%9F%BA%E7%A1%80%E5%B7%A5%E5%85%B7/index.html">
 <meta property="og:site_name" content="Zeng">
+<meta property="og:description" content="GAMES002 图形学基础研发工具 GAMES真的超级良心课程，对初学者极其友好。这门课是一些基础工具的介绍，前面的Linux&#x2F;Shell这类就直接跳过了，只记录了和我需要做的点云相关的内容。 几何处理软件：CloudCompare&#x2F;MeshLab&#x2F;Open3D CloudCompare：https:&#x2F;&#x2F;www.cloudcompare.org&#x2F;  点云处理 开源软件(C++) 图形化界面 底层">
 <meta property="og:locale">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="article:published_time" content="2024-10-28T14:11:43.000Z">
+<meta property="article:modified_time" content="2024-10-28T14:20:09.724Z">
 <meta property="article:author" content="阿曾">
+<meta property="article:tag" content="博客">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://spacezyx.github.io/404.jpg">
 
 
-<title >Zeng</title>
+<title >GAMES002-图形学研发基础工具</title>
 
 <!-- Favicon -->
 
@@ -59,7 +67,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["Explorer"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/img/avatar.jpg","icon16":"/img/avatar.jpg","icon32":"/img/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/img/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":false,"isHome":false,"postUpdate":"2024-10-28 22:20:12"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-10-28 22:20:09"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
@@ -317,10 +325,10 @@ mjx-container[display="true"] + br {
                     <!-- banner title -->
                     <div class="trm-banner-text ">
                         <div class="trm-label trm-mb-20">
-                            The article archive
+                            NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            云间连下榻，<br>天上接行杯。
+                            GAMES002-图形学研发基础工具
                         </h1>
 
                         
@@ -330,7 +338,7 @@ mjx-container[display="true"] + br {
                                 </li>
                                 <li>
                                     <span>
-                                        tags
+                                        2024
                                     </span>
                                 </li>
                             </ul>
@@ -432,207 +440,147 @@ mjx-container[display="true"] + br {
             
             <div class="trm-page-content col-lg-8">
                 <div id="trm-content" class="trm-content">
-                    <div class="row">
-    <div class="col-lg-12">
-        <div class="trm-card">
-            <div style="padding: 0 20px;">
-                
-                    <ul class="trm-tag-list" itemprop="keywords"><li class="trm-tag-list-item"><a class="tag-list-link" href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag">博客</a><span class="tag-list-count">13</span></li></ul>
-                
-            </div>
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            10/28
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            22:20
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            阿曾
         </div>
     </div>
 </div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h3 id="games002-图形学基础研发工具">GAMES002 图形学基础研发工具</h3>
+<p>GAMES真的超级良心课程，对初学者极其友好。这门课是一些基础工具的介绍，前面的Linux/Shell这类就直接跳过了，只记录了和我需要做的点云相关的内容。</p>
+<p><strong>几何处理软件：CloudCompare/MeshLab/Open3D</strong></p>
+<p>CloudCompare：<a target="_blank" rel="noopener" href="https://www.cloudcompare.org/">https://www.cloudcompare.org/</a></p>
+<ul>
+<li>点云处理</li>
+<li>开源软件(C++)</li>
+<li>图形化界面</li>
+<li>底层是PCL处理库</li>
+<li>提供一系列插件
+<ul>
+<li>法向估计</li>
+<li>outliers 去除</li>
+<li>点云分割</li>
+<li>......</li>
+</ul></li>
+</ul>
+<p>MeshLab：<a target="_blank" rel="noopener" href="https://www.meshlab.net/">https://www.meshlab.net/</a></p>
+<ul>
+<li>PyMeshLab：<a target="_blank" rel="noopener" href="https://pymeshlab.readthedocs.io/">https://pymeshlab.readthedocs.io/</a>
+<ul>
+<li>比较特殊的定制脚本功能：</li>
+<li><img src="/图形学研发基础工具/image-20241028215521467.png" alt="image-20241028215521467" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
+<li>ms.save_filter_script支持定制化脚本的功能</li>
+</ul></li>
+<li>网格处理</li>
+<li>开源软件(C++)</li>
+<li>图形化界面 + Python API</li>
+<li>同样支持各种网格算法
+<ul>
+<li>网格简化</li>
+<li>凸包计算</li>
+<li>……</li>
+</ul></li>
+</ul>
+<p>Open3D代码库：<a target="_blank" rel="noopener" href="https://www.open3d.org/docs/release/">https://www.open3d.org/docs/release/</a></p>
+<ul>
+<li>3D几何处理</li>
+<li>开源软件(C++)</li>
+<li>C++/Python API</li>
+<li>支持各种3D算法
+<ul>
+<li>点云处理</li>
+<li>网格处理</li>
+<li>……</li>
+</ul></li>
+</ul>
+<p><img src="/图形学研发基础工具/image-20241028221015101.png" alt="image-20241028221015101" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>重建工具：Colmap/nContextCapture</strong></p>
+<p>Colmap：<a target="_blank" rel="noopener" href="https://colmap.github.io/">https://colmap.github.io/</a></p>
+<ul>
+<li>论文附带的工具</li>
+<li>位姿估计+稀疏重建+稠密重建
+<ul>
+<li>渐进式重建：每张图片确定相机姿态 - 大概估算三维物体的位置，并对特殊点进行确认 - 得到稀疏点云 - 泊松重建等方法把位姿和稀疏点云变成稠密点云或网格</li>
+</ul></li>
+<li>开源软件(C++)</li>
+<li>图形化界面 + Python API</li>
+<li>稀疏重建/稠密重建的结果可以放进MeshLab</li>
+</ul>
+<p>ContextCapture：<a target="_blank" rel="noopener" href="https://docs.bentley.com/LiveContent/web/ContextCapture%20Help%20v4.5-v6/zh-cn/GUID-E71D0658-82CD-46F3-B400-17F95A3939EE.html">https://docs.bentley.com/LiveContent/web/ContextCapture%20Help%20v4.5-v6/zh-cn/GUID-E71D0658-82CD-46F3-B400-17F95A3939EE.html</a></p>
+<ul>
+<li>实景/航拍：位姿估计+重建</li>
+<li>商用软件</li>
+<li>图形化界面 + Python API</li>
+</ul>
+<p>其它重建工具：MetaShape/Meshroom/...</p>
+<p><strong>体数据可视化工具：ParaView</strong></p>
+<p>官网：<a target="_blank" rel="noopener" href="https://www.paraview.org/">https://www.paraview.org/</a></p>
+<p>文档：<a target="_blank" rel="noopener" href="https://docs.paraview.org/en/latest/index.html">https://docs.paraview.org/en/latest/index.html</a></p>
+<p>体数据 (Volume Data)：三维场，一般用网格表示</p>
+<ul>
+<li>体素 (Voxel)：网格中的一个格点，“三维的像素”</li>
+</ul>
+<p>常用方法：</p>
+<ul>
+<li>体渲染 (Volume Rendering)</li>
+<li>等值面提取 (Isosurface Extraction)</li>
+<li>切片可视化 (Slice Visualization)</li>
+</ul>
 
-<!-- history -->
+</article>
+    
+    
 
-<div class="row">
+</div>
+<div class="trm-post-next-prev row">
     <div class="col-lg-12">
         <!-- title -->
         <h5 class="trm-title-with-divider">
-            
-                博客
-            
-            <span data-number="01"></span>
+            其他文章
+            <span data-number="02"></span>
         </h5>
     </div>
-    <div class="col-lg-12">
-        <!-- timeline -->
-        <div class="trm-timeline">
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
             
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/10/28/GAMES002-%E5%9B%BE%E5%BD%A2%E5%AD%A6%E7%A0%94%E5%8F%91%E5%9F%BA%E7%A1%80%E5%B7%A5%E5%85%B7/" class="trm-anima-link">
-                                    GAMES002-图形学研发基础工具
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/10/25/GAMES101-05-06-Rasterization/" class="trm-anima-link">
-                                    GAMES101-05&amp;06-Rasterization
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/10/25/GAMES101-04-Transformation-Cont/" class="trm-anima-link">
-                                    GAMES101-04-Transformation-Cont.
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/10/25/GAMES101-03-Transformation/" class="trm-anima-link">
-                                    GAMES101-03-Transformation
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/09/05/%E3%80%8A%E4%BB%A3%E7%A0%81%E7%B2%BE%E8%BF%9B%E4%B9%8B%E8%B7%AF%E2%80%94%E2%80%94%E4%BB%8E%E7%A0%81%E5%86%9C%E5%88%B0%E5%B7%A5%E5%8C%A0%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="trm-anima-link">
-                                    《代码精进之路——从码农到工匠》读书笔记
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/08/02/GAMES101-01-Overview-of-Computer-Graphics/" class="trm-anima-link">
-                                    GAMES101-01 Overview of Computer Graphics
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/07/31/2024%E5%B9%B4%E4%B8%AD%E6%80%BB%E7%BB%93/" class="trm-anima-link">
-                                    2024年中总结
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/04/07/%E4%B8%89%E7%BB%B4%E7%82%B9%E4%BA%91%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/" class="trm-anima-link">
-                                    三维点云基本处理
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/03/26/%E3%80%8A%E6%95%B0%E5%AD%A6%E4%B9%8B%E7%BE%8E%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" class="trm-anima-link">
-                                    《数学之美》读书笔记
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
-            <div class="trm-timeline-item trm-scroll-animation">
-                <div class="trm-timeline-mark-light"></div>
-                <div class="trm-timeline-mark"></div>
-                <div class="trm-timeline-content less">
-                    
-                        <div class="trm-card-header">
-                            <h6>
-                                <a href="/2024/03/09/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%EF%BC%9APREDATOR-Registration-of-3D-Point-Clouds-with-Low-Overlap/" class="trm-anima-link">
-                                    论文笔记：PREDATOR: Registration of 3D Point Clouds with Low Overlap
-                                </a>
-                            </h6>
-                        </div>
-                    
-                </div>
-            </div>
-            
+            <a class="trm-op-top trm-anima-link" href="/2024/10/25/GAMES101-05-06-Rasterization/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/GAMES101-05-06-Rasterization/image-20241025143616736.png">
+                </span>
+                <h6 class="trm-op-title">GAMES101-05&amp;06-Rasterization</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/10/25</li>
+                <li>15:52</li>
+                <li>GAMES101课程笔记</li>
+            </ul>
         </div>
-        <!-- timeline end -->
     </div>
 </div>
+    
+</div>
 
-<!-- history end -->
-
-
-    <div class="trm-pagination">
-        <span class="page-number current">1</span><a class="page-number" href="/tags/%E5%8D%9A%E5%AE%A2/page/2/">2</a>
-    </div>
-
-
+    
 
 
 
@@ -674,9 +622,29 @@ mjx-container[display="true"] + br {
 
             
 
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="GAMES002 图形学基础研发工具"><a rel="nofollow" class="trm-toc-link" href="#games002-图形学基础研发工具"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">GAMES002 图形学基础研发工具</span></a></li></ol>
+      </div>
+    </div>
+
             
 <div class="trm-fixed-container">
     
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
     
     
     <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
@@ -711,6 +679,10 @@ mjx-container[display="true"] + br {
     
 
     <!-- 评论插件 -->
+    
+        
+
+        
     
 
 		
