@@ -7,12 +7,12 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="Lecture 08 Discrete Differential Geometry 三角网格曲面的两种理解：  G{V, E, F}：V-顶点集合 E-边集合 F-三角形集合 多边形网格均可转化为三角网格（不考虑流形结构） 半边数据结构：以“边”为中心的数据结构  网格连接关系存储在边上，每条边表达为两条“半边” 目的：提高点线面的查询或增删改操作的效率    几何（网格）处理库： 曲线曲面的微分">
+<meta name="description" content="Lecture 09 Differential Coordinate 局部特征度量：1‐邻域  一般“流形”结构也是通过局部邻域来定义    Laplace算子(operator)：  Differential Coordinates （微分坐标）：直观上感觉就是橙色点（附近点平均值）和红色点（实际值）的距离  平均曲率流定理：  拉普拉斯光滑：  拉普拉斯光滑例子：有可能会丢掉细节（over s">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GAMES102-08-离散微分几何">
-<meta property="og:url" content="https://spacezyx.github.io/2024/11/21/GAMES102-08-Differential-Geometry/index.html">
+<meta property="og:title" content="GAMES102-09-微分坐标">
+<meta property="og:url" content="https://spacezyx.github.io/2024/11/21/GAMES102-09-Differential-Coordinate/index.html">
 <meta property="og:site_name" content="Zeng">
-<meta property="og:description" content="Lecture 08 Discrete Differential Geometry 三角网格曲面的两种理解：  G{V, E, F}：V-顶点集合 E-边集合 F-三角形集合 多边形网格均可转化为三角网格（不考虑流形结构） 半边数据结构：以“边”为中心的数据结构  网格连接关系存储在边上，每条边表达为两条“半边” 目的：提高点线面的查询或增删改操作的效率    几何（网格）处理库： 曲线曲面的微分">
+<meta property="og:description" content="Lecture 09 Differential Coordinate 局部特征度量：1‐邻域  一般“流形”结构也是通过局部邻域来定义    Laplace算子(operator)：  Differential Coordinates （微分坐标）：直观上感觉就是橙色点（附近点平均值）和红色点（实际值）的距离  平均曲率流定理：  拉普拉斯光滑：  拉普拉斯光滑例子：有可能会丢掉细节（over s">
 <meta property="og:locale">
 <meta property="og:image" content="https://spacezyx.github.io/404.jpg">
 <meta property="og:image" content="https://spacezyx.github.io/404.jpg">
@@ -26,15 +26,24 @@
 <meta property="og:image" content="https://spacezyx.github.io/404.jpg">
 <meta property="og:image" content="https://spacezyx.github.io/404.jpg">
 <meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="article:published_time" content="2024-11-21T12:06:35.000Z">
-<meta property="article:modified_time" content="2024-11-21T12:08:17.236Z">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="article:published_time" content="2024-11-21T12:10:17.000Z">
+<meta property="article:modified_time" content="2024-11-21T12:12:07.006Z">
 <meta property="article:author" content="阿曾">
 <meta property="article:tag" content="博客">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://spacezyx.github.io/404.jpg">
 
 
-<title >GAMES102-08-离散微分几何</title>
+<title >GAMES102-09-微分坐标</title>
 
 <!-- Favicon -->
 
@@ -77,7 +86,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["Explorer"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/images/covers/avatar.jpg","icon16":"/images/covers/avatar.jpg","icon32":"/images/covers/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/images/covers/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-11-21 20:08:17"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-11-21 20:12:07"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
@@ -338,7 +347,7 @@ mjx-container[display="true"] + br {
                             NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            GAMES102-08-离散微分几何
+                            GAMES102-09-微分坐标
                         </h1>
 
                         
@@ -460,7 +469,7 @@ mjx-container[display="true"] + br {
     <div class="col-sm-4">
         <div class="trm-card trm-label trm-label-light text-center">
             <i class="iconfont far fa-clock trm-icon"></i><br>
-            20:08
+            20:12
         </div>
     </div>
     <div class="col-sm-4">
@@ -472,65 +481,88 @@ mjx-container[display="true"] + br {
 </div>
 <div class="trm-card ">
     <article id="article-container" class="trm-publication">
-    <h3 id="lecture-08-discrete-differential-geometry">Lecture 08 Discrete Differential Geometry</h3>
-<p>三角网格曲面的两种理解：</p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241115104924303.png" alt="image-20241115104924303" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>G{V, E, F}：V-顶点集合 E-边集合 F-三角形集合</p>
-<p>多边形网格均可转化为三角网格（不考虑流形结构）</p>
-<p>半边数据结构：以“边”为中心的数据结构</p>
+    <h3 id="lecture-09-differential-coordinate">Lecture 09 Differential Coordinate</h3>
+<p>局部特征度量：1‐邻域</p>
 <ul>
-<li>网格连接关系存储在边上，每条边表达为两条“半边”</li>
-<li>目的：提高点线面的查询或增删改操作的效率</li>
+<li>一般“流形”结构也是通过局部邻域来定义</li>
 </ul>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121100247225.png" alt="image-20241121100247225" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121100326242.png" alt="image-20241121100326242" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>几何（网格）处理库：</p>
-<p><strong>曲线曲面的微分几何</strong></p>
-<p>法向：</p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121101205302.png" alt="image-20241121101205302" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>曲率：曲线形状由曲率决定</p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121101218611.png" alt="image-20241121101218611" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>方向曲率：曲率是随着方向变化的</p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121101325941.png" alt="image-20241121101325941" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>曲面的曲率：</p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121101351882.png" alt="image-20241121101351882" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p><strong>离散微分几何</strong></p>
-<p>从光滑曲面上采样的离散点只有C<sup>0</sup>连续，但希望通过不可微的离散点得到原来光滑曲面的微分属性</p>
-<p>方法：</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121103454852.png" alt="image-20241121103454852" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121103542350.png" alt="image-20241121103542350" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Laplace算子(operator)：</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121103731752.png" alt="image-20241121103731752" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Differential Coordinates （微分坐标）：直观上感觉就是橙色点（附近点平均值）和红色点（实际值）的距离</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121103825272.png" alt="image-20241121103825272" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>平均曲率流定理：</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121103850137.png" alt="image-20241121103850137" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>拉普拉斯光滑：</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121104327061.png" alt="image-20241121104327061" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>拉普拉斯光滑例子：有可能会丢掉细节（over smoothing）</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121104404562.png" alt="image-20241121104404562" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Global Laplacian Smoothing（全局拉普拉斯光滑）</strong></p>
+<p>局部迭代光顺方法的问题：</p>
 <ul>
-<li>连续逼近</li>
-<li>离散逼近（这节课主要研究内容）</li>
+<li>迭代时有些地方快、有些地方慢</li>
+<li>有些地方的结果会产生自交</li>
 </ul>
-<p>平均曲率（Mean Curvature）：</p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121102203137.png" alt="image-20241121102203137" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>高斯曲率（Gauss Curvature）：</p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121102223344.png" alt="image-20241121102223344" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p><strong>极小曲面</strong>：平均曲率处处为0的曲面</p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121102325075.png" alt="image-20241121102325075" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>极小曲面及平均曲率流：</p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121102416040.png" alt="image-20241121102416040" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>离散平均曲率流：极小曲面求解方法</p>
-<p><img src="/images/GAMES102-08-Differential-Geometry/image-20241121102511597.png" alt="image-20241121102511597" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p><strong>离散极小曲面的局部迭代法</strong></p>
-<ol type="1">
-<li>找到边界</li>
-<li>固定边界顶点</li>
-<li>对每个内部顶点
-<ol type="1">
-<li>找顶点1‐邻域</li>
-<li>更新其坐标</li>
-</ol></li>
-<li>迭代</li>
-<li>更新所有顶点法向</li>
-<li>回到第三步</li>
-</ol>
-<p>需要注意的地方：</p>
+<p>同时满足微分坐标为0</p>
+<p>A是n×n的矩阵，但非常稀疏</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121141544490.png" alt="image-20241121141544490" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>拉普拉斯矩阵：</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121141650818.png" alt="image-20241121141650818" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>极小曲面生成的全局方法：</p>
 <ul>
-<li>只能对非封闭曲面（带一条边界）操作</li>
-<li>更新坐标需要用老的顶点坐标</li>
-<li>需要尝试试验不同的参数𝜆</li>
+<li>检测边界，固定边界</li>
+<li>构建稀疏方程组</li>
+<li>求解稀疏方程组</li>
+<li>更新内部顶点坐标</li>
 </ul>
-<p>后面介绍了科大的自研框架Utopia</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121141832443.png" alt="image-20241121141832443" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>曲面参数化</strong></p>
+<p>参数化：将曲面展开成平面</p>
+<p>每个3D顶点(x,y,z)对应一个2D点(u,v)</p>
+<ul>
+<li>(u,v) 称为 (x,y,z) 的参数（2D流形曲面的本征维数）</li>
+</ul>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121142012406.png" alt="image-20241121142012406" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>参数化是几何处理中的基本问题</p>
+<ul>
+<li>提供了三维曲面每个点的一个二维参数
+<ul>
+<li>本征维数参数</li>
+</ul></li>
+<li>在低维来处理高维问题，减少复杂度
+<ul>
+<li>降维</li>
+</ul></li>
+<li>三维曲面之间的相关问题可通过参数化空间来处理</li>
+</ul>
+<p>基本方法：将边界映射到平面的凸多边形上</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121142435346.png" alt="image-20241121142435346" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>可以证明：如果边界位于凸多边形上，则三角形一定不会发生翻转</p>
+<p>参数化操作步骤：</p>
+<ul>
+<li>检测边界</li>
+<li>将边界映射到正方形边界或圆边界（凸边界）</li>
+<li>构建稀疏方程组</li>
+<li>求解稀疏方程组</li>
+<li>更新顶点坐标</li>
+<li>连接纹理图像，更新显示</li>
+</ul>
+<p>曲面展开（参数化）：</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121142610613.png" alt="image-20241121142610613" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>纹理映射：</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121142623180.png" alt="image-20241121142623180" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>参数化应用：纹理映射：</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121142711033.png" alt="image-20241121142711033" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Constrained (Feature‐Preserving) Global Laplacian Smoothing （约束(保特征)拉普拉斯整体光滑）</strong></p>
+<p>有约束的拉普拉斯光滑（固定一些约束点，顶点约束、面约束等）</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121142857570.png" alt="image-20241121142857570" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>包括软约束（可以缓一缓）和硬约束（必须满足）</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121143043643.png" alt="image-20241121143043643"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'><img src="D:/读书笔记/图形学课程/GAMES102-几何建模与处理/09//images/GAMES102-09-Differential-Coordinate/image-20241121143043751.png" alt="image-20241121143043751" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121143106888.png" alt="image-20241121143106888" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>综合一下（其实就是在矩阵下面再加约束方程）：</p>
+<p><img src="/images/GAMES102-09-Differential-Coordinate/image-20241121143205693.png" alt="image-20241121143205693" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src=".//images/GAMES102-09-Differential-Coordinate/image-20241121143134327.png" alt="image-20241121143134327" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
 
 </article>
     
@@ -546,41 +578,21 @@ mjx-container[display="true"] + br {
         </h5>
     </div>
     
-        <div class="col-lg-6">
-    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
-        <div class="trm-older-publication">
-            
-            <a class="trm-op-top trm-anima-link" href="/2024/11/21/GAMES102-09-Differential-Coordinate/">
-                <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="/images/GAMES102-09-Differential-Coordinate/image-20241121103454852.png">
-                </span>
-                <h6 class="trm-op-title">GAMES102-09-微分坐标</h6>
-            </a>
-            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
-            <ul class="trm-card-data trm-label">
-                <li>24/11/21</li>
-                <li>20:10</li>
-                <li>GAMES102课程笔记</li>
-            </ul>
-        </div>
-    </div>
-</div>
-    
     
         <div class="col-lg-6">
     <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
         <div class="trm-older-publication">
             
-            <a class="trm-op-top trm-anima-link" href="/2024/11/21/GAMES102-07-Mesh/">
+            <a class="trm-op-top trm-anima-link" href="/2024/11/21/GAMES102-08-Differential-Geometry/">
                 <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="/images/GAMES102-07-Mesh/image-20241115095218155.png">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES102-08-Differential-Geometry/image-20241121100247225.png">
                 </span>
-                <h6 class="trm-op-title">GAMES102-07-曲线光顺&amp;离散曲线&amp;三角网格</h6>
+                <h6 class="trm-op-title">GAMES102-08-离散微分几何</h6>
             </a>
             <div class="trm-divider trm-mb-15 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">
                 <li>24/11/21</li>
-                <li>20:00</li>
+                <li>20:06</li>
                 <li>GAMES102课程笔记</li>
             </ul>
         </div>
@@ -639,7 +651,7 @@ mjx-container[display="true"] + br {
 				</span>
       </div>
       <div class="trm-post-toc-content">
-        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="Lecture 08 Discrete Differential Geometry"><a rel="nofollow" class="trm-toc-link" href="#lecture-08-discrete-differential-geometry"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">Lecture 08 Discrete Differential Geometry</span></a></li></ol>
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="Lecture 09 Differential Coordinate"><a rel="nofollow" class="trm-toc-link" href="#lecture-09-differential-coordinate"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">Lecture 09 Differential Coordinate</span></a></li></ol>
       </div>
     </div>
 
