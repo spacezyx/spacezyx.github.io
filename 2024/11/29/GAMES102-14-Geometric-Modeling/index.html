@@ -7,12 +7,12 @@
 <meta name="full-screen" content="yes">
 <meta name="theme-color" content="#317EFB" />
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
-<meta name="description" content="Lecture 13 Surface Reconstruction 建模：设计与重建  曲面设计(Design)  不存在的物体：通过人工交互凭空设计出新的物体  CAGD (NURBS)、mesh modeling  存在的物体：通过人工交互编辑修改构建出新的物体  Editing, deformation   曲面重建(Reconstruction)  存在的物体：对其采集并进行数字化构建 也">
+<meta name="description" content="Lecture 14 Geometric Modeling Solid Modeling 实体建模  几何操作符建模：使用一组几何操作符来构建模型。 几何操作符：包括挤出（extrusion）、旋转（revolution）、扫掠（sweeping）、放样（lofting）等。  挤出（Extrusion）：沿着直线段进行平移挤出，也称为扫掠（sweeping）。 旋转（Revolution）：沿着">
 <meta property="og:type" content="article">
-<meta property="og:title" content="GAMES102-13-曲面重建">
-<meta property="og:url" content="https://spacezyx.github.io/2024/11/29/GAMES102-13-Reconstruction/index.html">
+<meta property="og:title" content="GAMES102-14-几何建模">
+<meta property="og:url" content="https://spacezyx.github.io/2024/11/29/GAMES102-14-Geometric-Modeling/index.html">
 <meta property="og:site_name" content="Zeng">
-<meta property="og:description" content="Lecture 13 Surface Reconstruction 建模：设计与重建  曲面设计(Design)  不存在的物体：通过人工交互凭空设计出新的物体  CAGD (NURBS)、mesh modeling  存在的物体：通过人工交互编辑修改构建出新的物体  Editing, deformation   曲面重建(Reconstruction)  存在的物体：对其采集并进行数字化构建 也">
+<meta property="og:description" content="Lecture 14 Geometric Modeling Solid Modeling 实体建模  几何操作符建模：使用一组几何操作符来构建模型。 几何操作符：包括挤出（extrusion）、旋转（revolution）、扫掠（sweeping）、放样（lofting）等。  挤出（Extrusion）：沿着直线段进行平移挤出，也称为扫掠（sweeping）。 旋转（Revolution）：沿着">
 <meta property="og:locale">
 <meta property="og:image" content="https://spacezyx.github.io/404.jpg">
 <meta property="og:image" content="https://spacezyx.github.io/404.jpg">
@@ -51,29 +51,15 @@
 <meta property="og:image" content="https://spacezyx.github.io/404.jpg">
 <meta property="og:image" content="https://spacezyx.github.io/404.jpg">
 <meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
-<meta property="article:published_time" content="2024-11-29T06:58:58.000Z">
-<meta property="article:modified_time" content="2024-11-29T07:04:05.107Z">
+<meta property="article:published_time" content="2024-11-29T07:07:21.000Z">
+<meta property="article:modified_time" content="2024-11-29T07:09:22.706Z">
 <meta property="article:author" content="阿曾">
 <meta property="article:tag" content="博客">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://spacezyx.github.io/404.jpg">
 
 
-<title >GAMES102-13-曲面重建</title>
+<title >GAMES102-14-几何建模</title>
 
 <!-- Favicon -->
 
@@ -116,7 +102,7 @@
 
 <!-- Variable -->
 <script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["Explorer"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/images/covers/avatar.jpg","icon16":"/images/covers/avatar.jpg","icon32":"/images/covers/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/images/covers/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
-<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-11-29 15:04:05"};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2024-11-29 15:09:22"};</script>
 
 <!-- Theme mode css -->
 <link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
@@ -377,7 +363,7 @@ mjx-container[display="true"] + br {
                             NEWS LETTER
                         </div>
                         <h1 class="trm-mb-30 trm-hsmb-font">
-                            GAMES102-13-曲面重建
+                            GAMES102-14-几何建模
                         </h1>
 
                         
@@ -499,7 +485,7 @@ mjx-container[display="true"] + br {
     <div class="col-sm-4">
         <div class="trm-card trm-label trm-label-light text-center">
             <i class="iconfont far fa-clock trm-icon"></i><br>
-            15:04
+            15:09
         </div>
     </div>
     <div class="col-sm-4">
@@ -511,205 +497,219 @@ mjx-container[display="true"] + br {
 </div>
 <div class="trm-card ">
     <article id="article-container" class="trm-publication">
-    <p>Lecture 13 Surface Reconstruction</p>
-<p>建模：设计与重建</p>
+    <h3 id="lecture-14-geometric-modeling">Lecture 14 Geometric Modeling</h3>
+<p><strong>Solid Modeling 实体建模</strong></p>
 <ul>
-<li>曲面设计(Design)
+<li>几何操作符建模：使用一组几何操作符来构建模型。</li>
+<li>几何操作符：包括挤出（extrusion）、旋转（revolution）、扫掠（sweeping）、放样（lofting）等。
 <ul>
-<li>不存在的物体：通过人工交互凭空设计出新的物体
-<ul>
-<li>CAGD (NURBS)、mesh modeling</li>
+<li>挤出（Extrusion）：沿着直线段进行平移挤出，也称为扫掠（sweeping）。</li>
+<li>旋转（Revolution）：沿着圆弧进行旋转挤出，创建旋转曲面。</li>
+<li>放样（Loft）：通过在两个或多个轮廓之间创建平滑过渡来生成3D实体。</li>
 </ul></li>
-<li>存在的物体：通过人工交互编辑修改构建出新的物体
+<li>参数化：通过各种语义参数来控制模型。</li>
+<li>基于特征：可以添加各种组件，如孔（holes）、槽（grooves）、圆角（fillets）和倒角（chamfers）。</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128153814846.png" alt="image-20241128153814846" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>存储方式：Boundary Representation (B‐Rep) Modeling</p>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128154332667.png" alt="image-20241128154332667" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>CAD系统的挑战：</p>
+<p>交集与拓扑稳健性/精确性：确保几何体在交集操作后仍然保持预期的形状和连接性</p>
+<p>参数化设计：非线性优化</p>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128154838239.png" alt="image-20241128154838239" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Surface Editing 曲面编辑</strong></p>
+<p>网格曲面编辑：</p>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128154914264.png" alt="image-20241128154914264" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>曲面编辑方法：</p>
+<ol type="1">
+<li>设置代理形状：为输入形状 S设置一个代理 P，代理形状比原始形状更简单、更易于处理或具有更多语义信息。</li>
+<li>寻找映射：在代理形状 P 和原始形状 S之间找到一个映射关系，即 S=g(P)，其中 g 也被称为嵌入空间（embedded space）。</li>
+<li>用户交互和变形：用户与代理形状交互，将其变形为 P′。</li>
+<li>寻找变形映射：找到一个变形映射 P′=h(P)。</li>
+<li>计算新形状：从变形后的代理形状 P′ 计算出新的形状 S′，即 S′=g(P′)。</li>
+</ol>
+<p><strong>关键问题：寻找一个好的映射 g</strong></p>
+<p>代理形状是用于用户交互和变形的基础形状，可以是以下几种类型：</p>
 <ul>
-<li>Editing, deformation</li>
-</ul></li>
-</ul></li>
-<li>曲面重建(Reconstruction)
+<li>点（Points）：包括Points, vertices等。</li>
+<li>线/曲线（Lines/Curves）：包括Sketches, skeletons, silhouettes, wires等。</li>
+<li>网格（Meshes）：包括Bezier nets, lattices, cages等。</li>
+<li>其他形状（Other shapes）：可以是其他任何形状，用于从其他形状学习变形（Deformation transfer）。</li>
+</ul>
+<p><strong>Point based editing</strong></p>
 <ul>
-<li>存在的物体：对其采集并进行数字化构建</li>
-<li>也称为：逆向工程、扫描重建
+<li>RBF‐based Editing</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128155757598.png" alt="image-20241128155757598" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
 <ul>
-<li>Reverse engineering, scanning</li>
-</ul></li>
+<li>Moving Least Squares Method</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128155810223.png" alt="image-20241128155810223" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Vector Field Based Deformations</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128155822598.png" alt="image-20241128155822598" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Laplacian Editing</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128155845505.png" alt="image-20241128155845505" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Poisson Mesh Editing</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128155904747.png" alt="image-20241128155904747" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>As‐rigid‐as‐possible Deformation</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128155920458.png" alt="image-20241128155920458" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>ARAP Modeling</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128155951793.png" alt="image-20241128155951793" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Linear Rotation‐invariant Coordinates</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128160013030.png" alt="image-20241128160013030" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Curve Proxy</strong></p>
+<ul>
+<li>Skeleton based</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164420886.png" alt="image-20241128164420886" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Sketching Deformations</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164439545.png" alt="image-20241128164439545" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Wires based</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164456750.png" alt="image-20241128164456750" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Silhouette sketching based</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164520553.png" alt="image-20241128164520553" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Volumetric Graph Laplacian</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164545768.png" alt="image-20241128164545768" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Mesh Proxy</strong></p>
+<ul>
+<li>Free‐form Deformation (FFD)</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164625349.png" alt="image-20241128164625349" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Cage‐based deformation</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164643765.png" alt="image-20241128164643765" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Multiresolution Editing</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164707639.png" alt="image-20241128164707639" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Deformation Transfer</strong></p>
+<ul>
+<li>Deformation Transfer</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164735346.png" alt="image-20241128164735346" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Editing Arbitrary Deforming Surface Animations</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164750884.png" alt="image-20241128164750884" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Sketch‐based Modeling （基于草图的建模）</strong></p>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164820027.png" alt="image-20241128164820027" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>B‐Mesh</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164835685.png" alt="image-20241128164835685" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>其它：</p>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164849951.png" alt="image-20241128164849951" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164904002.png" alt="image-20241128164904002" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Sculpturing Modeling</strong></p>
+<p>A series of sculpting/brush operators：</p>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128164939845.png" alt="image-20241128164939845" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Data‐Driven Modeling 基于数据的建模</strong></p>
+<p>有一些三维几何模型数据库：</p>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128165055774.png" alt="image-20241128165055774" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>基于数据库里的模型，可以实现：</p>
+<ul>
+<li>Modeling by Examples</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128165124147.png" alt="image-20241128165124147" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Probabilistic Reasoning</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128165154679.png" alt="image-20241128165154679" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>ShapeSynth: Exploration as Design Tool</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128165220340.png" alt="image-20241128165220340" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Photo‐inspired Modeling</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128165243777.png" alt="image-20241128165243777" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Primitive‐based Modeling</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128165301428.png" alt="image-20241128165301428" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Shadow Guidance</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128165315311.png" alt="image-20241128165315311" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>Learning Generative Models of 3D Shapes (3D‐GAN)</li>
+</ul>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128165337014.png" alt="image-20241128165337014" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Shape Morphing</strong></p>
+<p>给定两个对象，产生一系列中间对象，这些对象逐渐从一个对象演变到另一个对象：</p>
+<ul>
+<li>插值对象形状</li>
+<li>插值对象属性
+<ul>
+<li>颜色、纹理、法线等</li>
 </ul></li>
 </ul>
-<p><strong>曲面重建的基本路线</strong>：</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114101621738.png" alt="image-20241114101621738" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p><strong>数据采集</strong></p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114101704430.png" alt="image-20241114101704430" style="zoom:75%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>医学图像处理：从截面出发</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114102611998.png" alt="image-20241114102611998" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>更多的处理：从表面出发</p>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128165447346.png" alt="image-20241128165447346" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>形状变换：</p>
 <ul>
-<li>输入单张图片，只考虑局部光照，反向求渲染方程 Shape from shading (SFS)</li>
-</ul>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114101920391.png" alt="image-20241114101920391" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<li>变形（Warping）：一元操作
 <ul>
-<li><p>多视角重建（输入多张图片，基于多视角几何）</p>
+<li>给定对象A和函数F(t)，找到对象B。</li>
+<li>图中用一个椭圆形状A和函数F(t)表示，通过变形操作得到新的形状。</li>
+</ul></li>
+<li>变形（Morphing）：二元操作
 <ul>
-<li>难点：相机之间的同步问题</li>
-</ul>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114102253776.png" alt="image-20241114102253776" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>Structured light （结构光/白光）重建</p>
-<ul>
-<li><p>结构光3D扫描仪：多用于CAD建模</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114102740493.png" alt="image-20241114102740493" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>SfM &amp; SLAM</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114102724821.png" alt="image-20241114102724821" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>SLAM主要流程：</p></li>
+<li>给定对象A和对象B，找到函数F(t)。</li>
+<li>图中用两个不同形状A和B表示，通过变形操作在两者之间创建连续的中间形状。</li>
 </ul></li>
 </ul>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114102823211.png" alt="image-20241114102823211" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-14-Geometric-Modeling/image-20241128165613314.png" alt="image-20241128165613314" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>术语：</p>
 <ul>
-<li>Laser Radar （激光雷达测距）</li>
+<li>变形（Morphing）：在两个形状之间创建连续的中间形状。</li>
+<li>变态（Metamorphosis）：可能指更复杂的变形过程，涉及形状和结构的变化。</li>
+<li>形状混合（Shape blending）：将两个或多个形状特征结合在一起。</li>
+<li>形状平均（Shape averaging）：计算多个形状的平均值，以创建一个新的形状。</li>
+<li>形状插值（Shape interpolation）：在两个形状之间创建中间形状的过程。</li>
+<li>形状过渡（Shape transition）：形状从一个状态平滑过渡到另一个状态。</li>
 </ul>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114102859380.png" alt="image-20241114102859380" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Rules for Good Morphing：</p>
 <ul>
-<li><p>Depth Images 深度图片</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114103004073.png" alt="image-20241114103004073" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<ul>
-<li><p>深度相机原理：</p>
-<ul>
-<li><p>Time of flight, TOF</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114103045977.png" alt="image-20241114103045977" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>Kinect</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114103058532.png" alt="image-20241114103058532" style="zoom:70%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-</ul></li>
-</ul></li>
-<li><p>Shape from Silhouette/Contours（剪影/轮廓的形状）</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114103305442.png" alt="image-20241114103305442" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>Probing（探针，机械方式，可能划伤物体表面）</p>
-<figure>
-<img src="/images/GAMES102-13-Reconstruction/image-20241114103321319.png" alt="image-20241114103321319"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'><figcaption>image-20241114103321319</figcaption>
-</figure></li>
-<li><p>全景相机(Panorama)</p>
-<ul>
-<li>多张图片拼接而成（拟三维：非真三维）</li>
-<li>千亿像素图片</li>
-</ul></li>
+<li>自然（Natural）：变形过程应该看起来自然流畅。</li>
+<li>保持形状特征：在变形过程中尽可能保持两个形状的体积、曲率、面积等特征。</li>
+<li>主观审美标准：考虑用户的审美偏好。</li>
+<li>用户控制（User control）：用户能够直观地控制变形过程。</li>
+<li>不沉重（not too heavy）：变形过程不应过于复杂或计算量大。</li>
+<li>适应用户知识（can be adapted to user's knowledge）：变形工具应能够根据用户的专业背景和知识水平进行调整。</li>
 </ul>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114103411187.png" alt="image-20241114103411187" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p><strong>配准</strong></p>
-<p>需要解决的问题：用多个视点进行扫描，每个视点得到分片3D数据，如何将这些分片数据合并成一个整体数据？</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114103647745.png" alt="image-20241114103647745" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>问题建模：</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114103716805.png" alt="image-20241114103716805" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>在3D模型变形（Morphing）过程中需要解决的两个子问题：对应问题（Correspondence problem）和路径问题（Path problem）。</p>
+<p><strong>对应问题</strong>（Correspondence problem）</p>
+<ol type="1">
+<li>兼容网格（Compatible meshes）：确保源网格（source meshes）和目标网格（target meshes）在结构上是兼容的，以便可以进行变形。</li>
+<li>参数化（Parameterization）：为源网格和目标网格上的每个点找到第二个网格上的对应点。这个过程涉及到网格的参数化，即建立两个网格之间的一一对应关系。</li>
+</ol>
+<p><strong>路径问题（Path problem）</strong></p>
 <ul>
-<li><p>对准的误差：</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114103808916.png" alt="image-20241114103808916" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>先验知识的误差：</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114103852937.png" alt="image-20241114103852937" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114103909305.png" alt="image-20241114103909305" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>全局优化/用图像做配准：</p></li>
+<li>中间形状（Inbetween shapes）：在源形状和目标形状之间生成一系列中间形状，这些形状逐渐从一个形状过渡到另一个形状。</li>
+<li>指定时间轨迹（Specify trajectory in time for each point）：为每个点在变形过程中的路径制定时间表，即确定每个点在变形过程中的位置和时间的关系。</li>
+<li>网格顶点轨迹（For mesh - specify vertex trajectory）：在网格变形中，需要为每个顶点指定其在变形过程中的轨迹。</li>
 </ul>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114104020773.png" alt="image-20241114104020773" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p><strong>整合</strong></p>
-<p>数据并不完美，需要对数据进行优化</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114104133281.png" alt="image-20241114104133281" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>整合的目的：</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114104313003.png" alt="image-20241114104313003" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>常见方法：</p>
-<ul>
-<li><p>去噪</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114104431945.png" alt="image-20241114104431945" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>重采样</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114104447046.png" alt="image-20241114104447046" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>补全</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114104456541.png" alt="image-20241114104456541" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-</ul>
-<p><strong>重建</strong></p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114104529303.png" alt="image-20241114104529303" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>重建存在很多限制：</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114104612122.png" alt="image-20241114104612122" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>重建方法大体可分为两大类：</p>
-<ul>
-<li><p>逼近法：构建连续函数，通常涉及散乱数据插值方案</p>
-<ul>
-<li><p>NURBS（非均匀有理B样条）曲面：一种常用的曲面建模技术。</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114104754763.png" alt="image-20241114104754763" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>带符号距离（Signed distances）：由Hoppe等人在1992年提出，用于表示点到表面的有符号距离。</p></li>
-<li><p>径向基函数重建（Radial basis function reconstruction）：由Carr等人在2001年提出，使用径向基函数进行表面重建（类似距离场，隐式函数方法，法向非常重要）。</p></li>
-<li><p><img src="/images/GAMES102-13-Reconstruction/image-20241114104824181.png" alt="image-20241114104824181" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>泊松重建（Poisson reconstruction）：由Kazhdan等人在2006年提出，利用散乱数据点的颜色和位置信息进行表面重建。</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114105021399.png" alt="image-20241114105021399" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>Marching Cube：基于体素求解</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114105218653.png" alt="image-20241114105218653" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114105233795.png" alt="image-20241114105233795" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-</ul></li>
-<li><p>离散法：点和点连接起来，直接构建三角形网格（离散方法需要假设点的采样足够密集）</p>
-<p>中轴：</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114110301145.png" alt="image-20241114110301145" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>Voronoi图可以用来逼近中轴：</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114110341040.png" alt="image-20241114110341040" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<ul>
-<li><p>Crust（Amenta &amp; Bern，1998）：提出了一种基于Voronoi图的表面重建算法。</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114110422103.png" alt="image-20241114110422103" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
-<li><p>Power-crust（Amenda et al. 2001）：一种基于Voronoi图的表面重建方法，用于生成更平滑的表面。</p></li>
-<li><p>Cocone（Dey &amp; Giesen 2001）：一种基于Voronoi图的表面重建方法，用于生成具有特定属性的表面。</p></li>
-<li><p>Cazals &amp; Giesen（2006）：提出了一种改进的表面重建算法。</p></li>
-<li><p>......</p></li>
-</ul></li>
-<li><h3 id="基于字典学习的曲面重建">基于字典学习的曲面重建</h3>
-<ul>
-<li>Xiong et al. Robust Surface Reconstruction via Dictionary Learning. Siggraph Asia 2014.</li>
-<li>不逼近也不用原来的点构建网格，而是重新采样得到网格</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114110731394.png" alt="image-20241114110731394" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-<li>交替迭代法</li>
-<li>度量误差：</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114110814256.png" alt="image-20241114110814256" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114110828645.png" alt="image-20241114110828645" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114110845851.png" alt="image-20241114110845851" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-</ul></li>
-<li><p>Hybrid Methods</p>
-<ul>
-<li>演化模型：</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114115911594.png" alt="image-20241114115911594" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-<li>双向演化模型：</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114115945587.png" alt="image-20241114115945587" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-</ul></li>
-</ul>
-<p><strong>后处理</strong></p>
-<p>Repairing, denoising, smoothing, simplification…</p>
-<ul>
-<li>Filling Holes in Meshes：</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114120159029.png" alt="image-20241114120159029" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-<li>Robust Repair of Polygonal Models</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114120227862.png" alt="image-20241114120227862" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-<li>Context‐based Surface Completion</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114120304259.png" alt="image-20241114120304259" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-<li>Example‐based Surface Completion</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114120324349.png" alt="image-20241114120324349" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-<li>Atomic Volumes for Mesh Completion</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114120356921.png" alt="image-20241114120356921" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-<li>Geometry Completion by Texture Synthesis</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114120422258.png" alt="image-20241114120422258" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-<li>More…</li>
-<li><img src="/images/GAMES102-13-Reconstruction/image-20241114120438828.png" alt="image-20241114120438828" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></li>
-</ul>
-<p><strong>动态物体的3D重建</strong></p>
-<p>多一个时间维度</p>
-<p>3D动态重建的困难性：</p>
-<ul>
-<li>数据量大</li>
-<li>数据采集困难
-<ul>
-<li>Single‐Camera</li>
-<li>Multi‐Camera</li>
-</ul></li>
-<li>数据结构复杂
-<ul>
-<li>Geometry</li>
-<li>Color</li>
-<li>Topology</li>
-</ul></li>
-<li>硬件需求高</li>
-<li>......</li>
-</ul>
-<p>General Pipeline：</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114120616924.png" alt="image-20241114120616924" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
-<p>动态物体的3D重建分为离线和在线，在线对计算速度要求较高，常见技巧是用上一帧的结果稍做改变去fit下一帧内容。</p>
-<p><img src="/images/GAMES102-13-Reconstruction/image-20241114120725400.png" alt="image-20241114120725400" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
 
 </article>
     
@@ -729,11 +729,11 @@ mjx-container[display="true"] + br {
     <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
         <div class="trm-older-publication">
             
-            <a class="trm-op-top trm-anima-link" href="/2024/11/29/GAMES102-14-Geometric-Modeling/">
+            <a class="trm-op-top trm-anima-link" href="/2024/11/29/GAMES102-15-Texture-Synthesis/">
                 <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="/images/GAMES-14-Geometric-Modeling/image-20241128153814846.png">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES-15-Texture-Synthesis/image-20241128170544012.png">
                 </span>
-                <h6 class="trm-op-title">GAMES102-14-几何建模</h6>
+                <h6 class="trm-op-title">GAMES102-15-纹理合成 &amp; 形状分析</h6>
             </a>
             <div class="trm-divider trm-mb-15 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">
@@ -750,16 +750,16 @@ mjx-container[display="true"] + br {
     <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
         <div class="trm-older-publication">
             
-            <a class="trm-op-top trm-anima-link" href="/2024/11/29/GAMES102-12-Geometric-Mapping/">
+            <a class="trm-op-top trm-anima-link" href="/2024/11/29/GAMES102-13-Reconstruction/">
                 <span class="trm-op-cover">
-                    <img alt="cover" class="no-fancybox" src="/images/GAMES-12-Geometric-Mapping/image-20241128145051806.png">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES102-13-Reconstruction/image-20241114101704430.png">
                 </span>
-                <h6 class="trm-op-title">GAMES102-12-几何映射 &amp; 几何优化</h6>
+                <h6 class="trm-op-title">GAMES102-13-曲面重建</h6>
             </a>
             <div class="trm-divider trm-mb-15 trm-mt-20"></div>
             <ul class="trm-card-data trm-label">
                 <li>24/11/29</li>
-                <li>14:56</li>
+                <li>14:58</li>
                 <li>GAMES102课程笔记</li>
             </ul>
         </div>
@@ -818,7 +818,7 @@ mjx-container[display="true"] + br {
 				</span>
       </div>
       <div class="trm-post-toc-content">
-        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="基于字典学习的曲面重建"><a rel="nofollow" class="trm-toc-link" href="#基于字典学习的曲面重建"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">基于字典学习的曲面重建</span></a></li></ol>
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="Lecture 14 Geometric Modeling"><a rel="nofollow" class="trm-toc-link" href="#lecture-14-geometric-modeling"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">Lecture 14 Geometric Modeling</span></a></li></ol>
       </div>
     </div>
 
