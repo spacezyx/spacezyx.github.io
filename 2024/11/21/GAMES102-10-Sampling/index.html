@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="Lecture 10 Surface Denoising &amp; Sampling &amp; Spliting 曲面去噪 网格曲面上的噪声：Meshes obtained from real world objects are often noisy.  噪声常见形式：  光滑&#x2F;去噪问题：  输入：M（含噪声的网格曲面） 输出：M0（无噪声的网格曲面） 去噪模型： M &#x3D; M0 + ε Ch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAMES102-10-曲面去噪&amp;采样与剖分">
+<meta property="og:url" content="https://spacezyx.github.io/2024/11/21/GAMES102-10-Sampling/index.html">
+<meta property="og:site_name" content="Zeng">
+<meta property="og:description" content="Lecture 10 Surface Denoising &amp; Sampling &amp; Spliting 曲面去噪 网格曲面上的噪声：Meshes obtained from real world objects are often noisy.  噪声常见形式：  光滑&#x2F;去噪问题：  输入：M（含噪声的网格曲面） 输出：M0（无噪声的网格曲面） 去噪模型： M &#x3D; M0 + ε Ch">
+<meta property="og:locale">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="article:published_time" content="2024-11-21T12:14:57.000Z">
+<meta property="article:modified_time" content="2025-05-14T12:24:01.259Z">
+<meta property="article:author" content="阿曾">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://spacezyx.github.io/404.jpg">
+
+
+<title >GAMES102-10-曲面去噪&采样与剖分</title>
+
+<!-- Favicon -->
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="https://unpkg.com/hexo-theme-async@2.2.2/source/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["ZENG. WELCOME"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/images/covers/avatar.jpg","icon16":"/images/covers/avatar.jpg","icon32":"/images/covers/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/images/covers/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-14 20:24:01"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/images/covers/avatar.jpg">
+    
+    
+        <div class="trm-logo-text">
+            曾<span>曾</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            GAMES102-10-曲面去噪&采样与剖分
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/images/covers/avatar.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        阿曾
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/spacezyx" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                上海
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                24
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:1292171824@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            20:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            阿曾
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h3 id="lecture-10-surface-denoising-sampling-spliting">Lecture 10
+Surface Denoising &amp; Sampling &amp; Spliting</h3>
+<p><strong>曲面去噪</strong></p>
+<p>网格曲面上的噪声：Meshes obtained from real world objects are often
+noisy.</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121144534385.png" alt="image-20241121144534385" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>噪声常见形式：</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121144654181.png" alt="image-20241121144654181" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>光滑/去噪问题：</p>
+<ul>
+<li>输入：M（含噪声的网格曲面）</li>
+<li>输出：M<sup>0</sup>（无噪声的网格曲面）</li>
+<li>去噪模型：</li>
+<li><span class="math display"><em>M</em> = <em>M</em><sup>0</sup> + <em>ε</em></span></li>
+<li>Challenge：等式右边的两个参数都不可知</li>
+</ul>
+<p>Mesh smoothing：</p>
+<ul>
+<li>假定：网格顶点的数据及连接关系不变</li>
+<li>问题转化为：求顶点的新位置（顶点偏移的方向），使得“噪声”减少
+<ul>
+<li>对顶点进行适当的扰动或偏移</li>
+</ul></li>
+</ul>
+<p>Mesh Smoothing Problem：</p>
+<ul>
+<li>输入：M（含噪声的网格曲面）</li>
+<li>输出：M<sup>0</sup>（无噪声的网格曲面）</li>
+<li>网格去噪模型：</li>
+<li><span class="math display"><em>𝒗</em> = <em>𝒗</em><sup>0</sup> + <em>ε</em><em>n</em>(∀<em>𝒗</em> ∈ <em>M</em>)</span></li>
+<li>Challenge：顶点的位移 n 是多少</li>
+<li>The normal of 𝒗 : doable → 新模型</li>
+<li><span class="math display"><em>𝒗</em><sup>0</sup> = <em>𝒗</em> − <em>ε</em><em>n</em></span></li>
+<li>若干次迭代找无噪声模型（反向求解）</li>
+</ul>
+<p>滤波：</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121145803879.png" alt="image-20241121145803879" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>顶点滤波</strong></p>
+<ul>
+<li><p>拉普拉斯光滑</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121150349286.png" alt="image-20241121150349286" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>平均曲率流</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121150405317.png" alt="image-20241121150405317" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>双边滤波</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121150426874.png" alt="image-20241121150426874" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>隐式网格演化</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121150507529.png" alt="image-20241121150507529" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+</ul>
+<p><strong>法向滤波</strong></p>
+<ul>
+<li>先对法向进行滤波：可使用顶点滤波的任何方法</li>
+<li>根据滤波后的法向重建网格顶点
+<ul>
+<li>输入：滤波后的法向量场</li>
+<li>输出：重建网格顶点，使得其法向量接近输入</li>
+<li>优化方法：求解线性方程组</li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121150640642.png" alt="image-20241121150640642" style="zoom:75%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>全局光滑</strong></p>
+<p>全局光滑方程组（和上节课的全局拉普拉斯光滑一样）</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121150827905.png" alt="image-20241121150827905" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>网格改进（Mesh Improvement）</strong></p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121151015178.png" alt="image-20241121151015178" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>改进网格质量：</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121151051958.png" alt="image-20241121151051958" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>其他去噪方法：</p>
+<ul>
+<li>基于稀疏优化的方法</li>
+<li>基于压缩感知的方法</li>
+<li>基于机器学习的方法</li>
+<li>……</li>
+</ul>
+<p><strong>采样(Sampling)</strong></p>
+<p>采样：从连续到离散</p>
+<p>曲线曲面的离散表达</p>
+<ul>
+<li><p>曲线的绘制：</p>
+<ul>
+<li><p>GDI/OpenGL 绘制基本单元：点、线段</p></li>
+<li><p>曲线须离散成多边形</p></li>
+</ul></li>
+<li><p>曲面的绘制：</p>
+<ul>
+<li>OpenGL 绘制基本单元：点、线、三角形</li>
+<li>曲面须离散成三角形网格</li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121151412429.png" alt="image-20241121151412429" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>离散的本质：采样(Sampling)</p>
+<ul>
+<li>曲线曲面的采样
+<ul>
+<li>在参数域上采样</li>
+<li>直接在原始曲线曲面采样</li>
+</ul></li>
+<li>NURBS曲线曲面的采样误差估计
+<ul>
+<li>可进行理论上的误差分析</li>
+</ul></li>
+<li>逆向工程：
+<ul>
+<li>采样点的获取
+<ul>
+<li>通过扫描硬件设备得到采样点</li>
+<li>通过（多视点几何）重建算法计算得到采样点</li>
+</ul></li>
+<li>重建问题：如何通过采样点重构原始曲线/曲面
+<ul>
+<li>连续重建：用连续函数来拟合表达</li>
+<li>离散重建：直接得到离散基元表达</li>
+</ul></li>
+</ul></li>
+<li>图像：区域的采样</li>
+<li>视频：时间的采样</li>
+</ul>
+<p>采样与重建：</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121151604300.png" alt="image-20241121151604300" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>欠采样产生频率的走样：</p>
+<ul>
+<li>高频函数拟合低频信号：过拟合</li>
+<li>低频函数拟合高频信号：欠拟合</li>
+</ul>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121151634402.png" alt="image-20241121151634402" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>1D曲线的采样：分段线性逼近表达</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121151736345.png" alt="image-20241121151736345" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>2D曲面的采样：分片线性逼近表达</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121151744649.png" alt="image-20241121151744649" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>平面规则区域的采样：将一个区域分解为若干个小区域</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121151801044.png" alt="image-20241121151801044" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>平面区域的不规则采样：将一个区域分解为若干个小区域</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121151821412.png" alt="image-20241121151821412" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Triangulation（三角剖分）： 复杂函数的分片线性逼近(piece‐wise linear
+approximation)</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121151852324.png" alt="image-20241121151852324" style="zoom:75%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Blue Noise Sampling（蓝噪声采样）：看着均匀但不规整</p>
+<ul>
+<li>(左)均匀分布但随机定位的点集</li>
+<li>(右)蓝噪声分布的典型功率谱、径向平均功率谱和各向异性</li>
+</ul>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121152041933.png" alt="image-20241121152041933" style="zoom:75%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>平面三角网格</strong></p>
+<p>给定平面上一些点，如何生成比较好的三角剖分（一般认为左边比右边好）</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121152119140.png" alt="image-20241121152119140" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>衡量网格质量的标准有很多标准：</p>
+<ul>
+<li>最小角度（Minimal
+angle）：网格中所有角度的最小值，较大的最小角度通常意味着网格质量较好。</li>
+<li>平均比率（Mean
+ratio）：可能指的是网格中元素形状的一致性，例如在三角形网格中，这可能与三角形的边长比有关。</li>
+<li>纵横比/半径比（Aspect/radius
+ratio）：衡量网格元素的长宽比，较低的纵横比通常表示更好的网格质量。</li>
+<li>奇异值（Singular
+values）：在数值分析中，奇异值可以用于评估矩阵的条件数，进而反映网格的质量。</li>
+</ul>
+<p>定义一个被所有人接受的通用网格质量标准并不容易，但普遍认为最好的简单形是等边三角形和正四面体。这些形状在几何上是对称的，具有均匀的属性，因此在许多应用中被认为是最优的网格元素。</p>
+<p><strong>Delaunay三角化</strong></p>
+<p>Voroni图：所有边都是由某两个点的中垂线组成</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121152447167.png" alt="image-20241121152447167" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Delaunay三角化：Voroni图对偶过来，由点去构成三角形</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121152557061.png" alt="image-20241121152557061" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>网格剖分（Mesh Generation）</strong></p>
+<p>DT （Delaunay
+Triangulation，德劳内三角剖分）只在点固定时优化连接，但点的分布对于一个好的网格来说更为重要。</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121153121900.png" alt="image-20241121153121900" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>优化网格的方法：CVT(Centroidal Voronoi Tessellation,
+质心Voronoi镶嵌）</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121153210971.png" alt="image-20241121153210971" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li><p>定义：当每个种子点（seed）与其Voronoi单元（Voronoi
+cell）的质心（centroid）重合时，这种Voronoi镶嵌被称为质心Voronoi镶嵌（CVT）。</p></li>
+<li><p>图示：</p>
+<ul>
+<li>左图（Generic
+VT）：普通的Voronoi镶嵌，其中种子点（紫色点）随机分布，每个种子点周围的多边形区域是该种子点的Voronoi单元，即所有距离该种子点最近的点的集合。</li>
+<li>右图（CVT）：质心Voronoi镶嵌，其中每个种子点都位于其Voronoi单元的质心位置。这种布局使得Voronoi单元的形状更加均匀，种子点的分布也更加平衡。</li>
+</ul></li>
+<li><p>CVT迭代方法：Lloyd算法</p>
+<ul>
+<li><p>构建Voronoi镶嵌（VT）：首先，根据给定的点集构建Voronoi镶嵌。每个点都会生成一个Voronoi单元，该单元包含所有距离该点比其他点更近的点。</p></li>
+<li><p>计算Voronoi区域的质心：对于每个Voronoi单元，计算其质心，即该单元内所有点的平均位置。</p></li>
+<li><p>将点移动到质心：将原始点移动到其对应Voronoi单元的质心位置。</p></li>
+<li><p>迭代直到收敛：重复上述步骤，直到点的位置不再发生显著变化，即算法收敛。收敛意味着点的分布已经达到了一个稳定状态，此时的Voronoi镶嵌即为质心Voronoi镶嵌。</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121153613298.png" alt="image-20241121153613298" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+</ul></li>
+</ul>
+<p>Optimal Delaunay Triangulation
+(ODT)：一种特殊的Delaunay三角剖分，它在所有具有相同顶点数的三角剖分中，最小化了插值误差。</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121153836134.png" alt="image-20241121153836134" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>CVT &amp; ODT Energy：</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121153847701.png" alt="image-20241121153847701" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Compare ODT and CVT：</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121153912143.png" alt="image-20241121153912143" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>高维几何对象的采样与剖分</strong></p>
+<p>二维流形曲面的采样与网格化：</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121154033131.png" alt="image-20241121154033131" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>二维流形曲面的四边形网格化：</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121154054100.png" alt="image-20241121154054100" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>空间体的采样与剖分：</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121154109513.png" alt="image-20241121154109513" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>空间体的四面体网格：</p>
+<p><img src="/images/GAMES102-10-Sampling/image-20241121154125568.png" alt="image-20241121154125568" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/11/29/GAMES102-11-Surface-Parameterization/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES-11-Surface-Parameterization/image-20241122135607048.png">
+                </span>
+                <h6 class="trm-op-title">GAMES102-11-曲面参数化 &amp; 曲面简化</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/11/29</li>
+                <li>14:52</li>
+                <li>GAMES102课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/11/21/GAMES102-09-Differential-Coordinate/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES102-09-Differential-Coordinate/image-20241121103454852.png">
+                </span>
+                <h6 class="trm-op-title">GAMES102-09-微分坐标</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/11/21</li>
+                <li>20:10</li>
+                <li>GAMES102课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">阿曾</span>
+        </div>
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+    
+        <div class="trm-footer-item">
+            Welcome to my blog.
+        </div>
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="Lecture 10
+Surface Denoising &amp; Sampling &amp; Spliting"><a rel="nofollow" class="trm-toc-link" href="#lecture-10-surface-denoising-sampling-spliting"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">Lecture 10
+Surface Denoising &amp; Sampling &amp; Spliting</span></a></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/plugins/typing.js?v=2.2.2"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/main.js?v=2.2.2"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

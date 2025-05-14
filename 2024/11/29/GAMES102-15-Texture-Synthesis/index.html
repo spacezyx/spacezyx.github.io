@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="Lecture 15 Texture Synthesis &amp; Shape Analysis 表面纹理：  3D 模型的纹理处理：  纹理合成： 给定一个样本纹理 I，目标是合成一个新的纹理 J，它：  看起来像输入的样本 结果中没有一部分是样本的重复。    什么是纹理：  以外观为特征 元素以近似随机的方式排列  图像 VS. 纹理：  纹理的属性：  2D Texture Synthe">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAMES102-15-纹理合成 &amp; 形状分析">
+<meta property="og:url" content="https://spacezyx.github.io/2024/11/29/GAMES102-15-Texture-Synthesis/index.html">
+<meta property="og:site_name" content="Zeng">
+<meta property="og:description" content="Lecture 15 Texture Synthesis &amp; Shape Analysis 表面纹理：  3D 模型的纹理处理：  纹理合成： 给定一个样本纹理 I，目标是合成一个新的纹理 J，它：  看起来像输入的样本 结果中没有一部分是样本的重复。    什么是纹理：  以外观为特征 元素以近似随机的方式排列  图像 VS. 纹理：  纹理的属性：  2D Texture Synthe">
+<meta property="og:locale">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="article:published_time" content="2024-11-29T07:07:42.000Z">
+<meta property="article:modified_time" content="2025-05-14T12:24:01.259Z">
+<meta property="article:author" content="阿曾">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://spacezyx.github.io/404.jpg">
+
+
+<title >GAMES102-15-纹理合成 & 形状分析</title>
+
+<!-- Favicon -->
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="https://unpkg.com/hexo-theme-async@2.2.2/source/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["ZENG. WELCOME"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/images/covers/avatar.jpg","icon16":"/images/covers/avatar.jpg","icon32":"/images/covers/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/images/covers/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-14 20:24:01"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/images/covers/avatar.jpg">
+    
+    
+        <div class="trm-logo-text">
+            曾<span>曾</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            GAMES102-15-纹理合成 & 形状分析
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/images/covers/avatar.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        阿曾
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/spacezyx" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                上海
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                24
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:1292171824@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            20:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            阿曾
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h3 id="lecture-15-texture-synthesis-shape-analysis">Lecture 15 Texture
+Synthesis &amp; Shape Analysis</h3>
+<p>表面纹理：</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241128170544012.png" alt="image-20241128170544012" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>3D 模型的纹理处理：</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241128170621482.png" alt="image-20241128170621482" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>纹理合成：</p>
+<p>给定一个样本纹理 I，目标是合成一个新的纹理 J，它：</p>
+<ul>
+<li>看起来像输入的样本</li>
+<li>结果中没有一部分是样本的重复。</li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241128170759592.png" alt="image-20241128170759592" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241128170656286.png" alt="image-20241128170656286" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>什么是纹理：</p>
+<ul>
+<li>以外观为特征</li>
+<li>元素以近似随机的方式排列</li>
+</ul>
+<p>图像 VS. 纹理：</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241128170918280.png" alt="image-20241128170918280" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>纹理的属性：</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241128171037879.png" alt="image-20241128171037879" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>2D Texture Synthesis 二维纹理合成</strong></p>
+<ul>
+<li><p>纹理分析</p>
+<ul>
+<li>如何捕捉纹理的本质？</li>
+</ul></li>
+<li><p>需要对整个范围进行建模</p>
+<ul>
+<li>从重复纹理到随机纹理</li>
+</ul></li>
+<li><p>这个问题是视觉、图形统计和图像压缩的交叉领域</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241128171324973.png" alt="image-20241128171324973" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+</ul>
+<p><strong>基于案例的技术</strong></p>
+<ul>
+<li><p>参数化技术</p>
+<ul>
+<li>在特征空间中计算全局统计数据，并直接从纹理集合中采样图像</li>
+<li>为纹理表示假设一个数学模型，匹配输入和输出纹理的模型参数</li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241128171407679.png" alt="image-20241128171407679" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>非参数化技术</p>
+<ul>
+<li>估计局部条件概率密度函数，并逐步合成像素</li>
+<li>通过从输入复制进行合成（马尔可夫-随机场模型（Markov-Random Field
+Model）），像素外观仅依赖于其邻近区域</li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241128171518400.png" alt="image-20241128171518400" style="zoom:150%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>理想情况下的单像素合成（Synthesizing One Pixel）：</p>
+<ul>
+<li>假设马尔可夫属性：给定邻域窗口，像素 p<em>p</em>
+的条件概率分布是什么？</li>
+<li>直接搜索：不构建模型，而是直接在输入图像中搜索所有这样的邻域，为 p
+生成一个直方图。</li>
+<li>随机选择匹配：为了合成 p，只需随机选择一个匹配项。</li>
+</ul>
+<p>实际情况下的单像素合成（Really Synthesizing One Pixel）：</p>
+<ul>
+<li>有限样本图像：由于我们的样本图像是有限的，可能不存在完全匹配的邻域。</li>
+<li>寻找最佳匹配：使用SSD（Sum of Squared
+Differences，平方差之和）误差来寻找最佳匹配，SSD误差通过高斯权重来强调局部结构。</li>
+<li>考虑邻近样本：采取与最佳匹配项一定距离内的所有样本。</li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241128171813196.png" alt="image-20241128171813196" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>相似合成需要有合适的pattern窗口大小：</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129134414203.png" alt="image-20241129134414203" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Patch‐based Synthesis：</p>
+<ul>
+<li>用patch代替单像素</li>
+<li>速度快，结果不容易出现碎块/糊块</li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129134506146.png" alt="image-20241129134506146" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>最小割问题：</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129134709314.png" alt="image-20241129134709314" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129134731977.png" alt="image-20241129134731977" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Seam Optimization：</p>
+<ul>
+<li>基于能量图的图像缩放方法，通过移除或复制具有最低能量值的像素路径（即seam）来调整图像的大小。</li>
+<li>阶段：
+<ul>
+<li>构建能量图</li>
+<li>计算seam</li>
+<li>移除或添加seam</li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129134930533.png" alt="image-20241129134930533" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Texton‐based Synthesis：</p>
+<ul>
+<li>基于纹理基元（textons）的纹理合成</li>
+<li>首先使用Harr小波等变换工具获取具有方向性的纹理子图象，然后提取纹理基元，并应用统计方法和矢量场对纹理区域进行由粗到细的分割</li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129135038049.png" alt="image-20241129135038049" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Synthesis with Vector Field Control：</p>
+<ul>
+<li>基于向量场可以做斜着的合成</li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129135113550.png" alt="image-20241129135113550" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>3D Texture Synthesis</strong></p>
+<p>过程式纹理合成 Procedural texture synthesis：</p>
+<ul>
+<li><p>使用3D函数定义物体的纹理属性</p></li>
+<li><p>世界坐标（x, y, z）上的函数</p></li>
+<li><p>模仿自然纹理的统计特性</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129142326546.png" alt="image-20241129142326546" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+</ul>
+<p>基于采样的纹理合成 Sample‐based texture synthesis：</p>
+<ul>
+<li>通过给网格顶点上色来合成表面纹理（Synthesize a surface texture by
+coloring mesh vertices）</li>
+<li>从二维纹理合成扩展而来（Extensions from 2D texture synthesis）</li>
+<li>关键问题（Key issues）
+<ul>
+<li>重采样（Resampling）</li>
+<li>局部展平（Local flattening）
+<ul>
+<li>大小（Size）</li>
+<li>方向（Orientation）</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129142341023.png" alt="image-20241129142341023" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>几何合成 Geometry Synthesis：</p>
+<ul>
+<li>通过纹理（几何）样本在表面上生成几何形状（Generating geometry over
+surfaces by texture (geometry) samples）</li>
+<li>方法（Methods）：
+<ul>
+<li>基于三维距离场的方法（3D distance field based method）</li>
+<li>将图像类比扩展到体积（Image analogies extended to volumes）</li>
+<li>基于网格的几何纹理合成技术（Mesh-based geometric texture synthesis
+technique）</li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129142648020.png" alt="image-20241129142648020" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>形状分析与理解</strong></p>
+<p>三维几何处理：从局部到全局</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143027620.png" alt="image-20241129143027620" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>形状理解：</p>
+<ul>
+<li><p>形状特征 Shape features：</p>
+<ul>
+<li><p>特征点 Feature points</p></li>
+<li><p>特征线 Feature lines</p></li>
+<li><p>显著性 Saliency</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143306523.png" alt="image-20241129143306523" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+</ul></li>
+<li><p>对齐 Alignment (upright）</p></li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143314716.png" alt="image-20241129143314716" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li><p>形状分割 Shape segmentation (components)</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143410768.png" alt="image-20241129143410768" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>一组形状的共同分割 Co‐segmentation of a set of
+shapes，从多个形状中推断出的知识比从单个形状中推断出的知识更多</p></li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143544909.png" alt="image-20241129143544909" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li><p>标签 Labeling</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143617820.png" alt="image-20241129143617820" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>对称 Symmetries</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143651515.png" alt="image-20241129143651515" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>骨架 Skeleton</p></li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143714167.png" alt="image-20241129143714167" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>形状匹配 Shape matching
+<ul>
+<li>相似性 Similarity</li>
+<li>一致性 Correspondences</li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143758900.png" alt="image-20241129143758900" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li><p>物体检索 Shape retrieval</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143831837.png" alt="image-20241129143831837" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>分类</p></li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143845542.png" alt="image-20241129143845542" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>结构/分层结构 Structures/Hierarchical structures</li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143923409.png" alt="image-20241129143923409" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li><p>功能性 Functionality</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129143948844.png" alt="image-20241129143948844" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>物体交互关系 Object affordance</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129144027811.png" alt="image-20241129144027811" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+</ul>
+<p><strong>Shape Descriptors</strong></p>
+<p>形状描述的核心问题：形状表征（描述子、特征）</p>
+<p>如何度量两个三维元素的相似性？</p>
+<ul>
+<li>整体形状
+<ul>
+<li>全局描述子</li>
+</ul></li>
+<li>局部形状
+<ul>
+<li>局部描述子</li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129144218335.png" alt="image-20241129144218335" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>例子：模型分割‐根据特征的聚类 (Clustering/Labeling)</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129144238913.png" alt="image-20241129144238913" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>三维数据的信息：</p>
+<ul>
+<li>点坐标 (x,y,z)</li>
+<li>几何量
+<ul>
+<li>长度、角度、面积、体积</li>
+</ul></li>
+<li>微分量
+<ul>
+<li>法向量</li>
+<li>曲率</li>
+</ul></li>
+<li>拓扑量
+<ul>
+<li>连接关系</li>
+<li>Laplace谱</li>
+</ul></li>
+<li>映射度量
+<ul>
+<li>雅可比（变形量）</li>
+<li>共形比</li>
+</ul></li>
+<li>……</li>
+</ul>
+<p>全局特征：扩展高斯图等</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129144424533.png" alt="image-20241129144424533" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>对不同的情况会定义各种特征，图中是各种人工定义的3D形状特征：</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129144504049.png" alt="image-20241129144504049" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>对于特征：</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129144547889.png" alt="image-20241129144547889" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>三维数据的深度学习的三种方法：</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129144621838.png" alt="image-20241129144621838" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>深度学习理解：</p>
+<ul>
+<li>通用拟合器（较大的逼近函数空间）
+<ul>
+<li>应用三部曲
+<ul>
+<li>在哪找（网络构造）、哪个好（损失函数）、怎么找（优化）</li>
+<li>仅拟合了大量样本：可能只是“虚假关系”</li>
+<li>并没有“理解”或“认知”真正的规律</li>
+<li>不可解释性</li>
+</ul></li>
+</ul></li>
+<li>性能依赖训练样本（数据集）
+<ul>
+<li>当数据集足够密：近似“最近邻”算法</li>
+<li>训练数据集不够完备：缺乏泛化能力</li>
+<li>大部分是过拟合</li>
+</ul></li>
+<li>基于深度神经网络的深度学习并不是真正的AI，离真正的“智能”仍很遥远</li>
+</ul>
+<p>稀疏学习与深度学习：殊途同归</p>
+<ul>
+<li>方法的不同性
+<ul>
+<li>压缩感知：基于模型的，有很好的结构和数学模型；来自于数学理论的突破</li>
+<li>深度学习：基于实证的，模型灵活，须通过数据进行监督学习；来自于求解速度的突破</li>
+</ul></li>
+<li>一致性
+<ul>
+<li>目标：高维数据的信息（特征）提取</li>
+<li>结果：从局部信息来处理全局信息</li>
+<li>类似的网络结构：求解L1优化的IST（Iterative
+Soft-Thresholding）算法实质上是多层网络优化</li>
+</ul></li>
+</ul>
+<p>图形计算的主要应用领域：</p>
+<p><img src="/images/GAMES-15-Texture-Synthesis/image-20241129144841981.png" alt="image-20241129144841981" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/12/22/%E5%AD%A6%E6%9C%AF%E5%92%B8%E9%B1%BC%E8%87%AA%E6%95%91%E6%8C%87%E5%8D%97%E8%A6%81%E7%82%B9%E8%AE%B0%E5%BD%95/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/%E8%87%AA%E6%95%91%E6%8C%87%E5%8D%97/image-20241220164631627.png">
+                </span>
+                <h6 class="trm-op-title">《学术“咸鱼”自救指南》要点记录</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/12/22</li>
+                <li>15:17</li>
+                <li>GAMES102课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/11/29/GAMES102-14-Geometric-Modeling/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES-14-Geometric-Modeling/image-20241128153814846.png">
+                </span>
+                <h6 class="trm-op-title">GAMES102-14-几何建模</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/11/29</li>
+                <li>15:07</li>
+                <li>GAMES102课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">阿曾</span>
+        </div>
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+    
+        <div class="trm-footer-item">
+            Welcome to my blog.
+        </div>
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="Lecture 15 Texture
+Synthesis &amp; Shape Analysis"><a rel="nofollow" class="trm-toc-link" href="#lecture-15-texture-synthesis-shape-analysis"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">Lecture 15 Texture
+Synthesis &amp; Shape Analysis</span></a></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/plugins/typing.js?v=2.2.2"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/main.js?v=2.2.2"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

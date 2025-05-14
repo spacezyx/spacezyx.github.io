@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="这篇是《数学之美》的读书笔记，可能有流水账之嫌，我尽量让文字更有逻辑一些。这本书最开始是在一位毕业学长的书架上看到的，本以为是介绍一本算法的书，后来发现是自然语言处理领域的内容。 自然语言处理基础 信息的冗余是信息安全的保证，而文字的信息与数字的信息有所不同。对语言而言，语料对翻译至关重要。当前的自然语言处理方法包含基于规则和基于统计两种。统计语言模型往往利用马尔可夫假设：即任意一个词出现改了只和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《数学之美》读书笔记">
+<meta property="og:url" content="https://spacezyx.github.io/2024/03/26/%E3%80%8A%E6%95%B0%E5%AD%A6%E4%B9%8B%E7%BE%8E%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Zeng">
+<meta property="og:description" content="这篇是《数学之美》的读书笔记，可能有流水账之嫌，我尽量让文字更有逻辑一些。这本书最开始是在一位毕业学长的书架上看到的，本以为是介绍一本算法的书，后来发现是自然语言处理领域的内容。 自然语言处理基础 信息的冗余是信息安全的保证，而文字的信息与数字的信息有所不同。对语言而言，语料对翻译至关重要。当前的自然语言处理方法包含基于规则和基于统计两种。统计语言模型往往利用马尔可夫假设：即任意一个词出现改了只和">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-03-25T16:03:21.000Z">
+<meta property="article:modified_time" content="2025-05-14T12:24:01.261Z">
+<meta property="article:author" content="阿曾">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+
+
+<title >《数学之美》读书笔记</title>
+
+<!-- Favicon -->
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="https://unpkg.com/hexo-theme-async@2.2.2/source/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["ZENG. WELCOME"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/images/covers/avatar.jpg","icon16":"/images/covers/avatar.jpg","icon32":"/images/covers/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/images/covers/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-14 20:24:01"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/images/covers/avatar.jpg">
+    
+    
+        <div class="trm-logo-text">
+            曾<span>曾</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            《数学之美》读书笔记
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/images/covers/avatar.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        阿曾
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/spacezyx" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                上海
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                24
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:1292171824@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            20:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            阿曾
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <p>这篇是《数学之美》的读书笔记，可能有流水账之嫌，我尽量让文字更有逻辑一些。这本书最开始是在一位毕业学长的书架上看到的，本以为是介绍一本算法的书，后来发现是自然语言处理领域的内容。</p>
+<p><strong>自然语言处理基础</strong></p>
+<p>信息的冗余是信息安全的保证，而文字的信息与数字的信息有所不同。对语言而言，语料对翻译至关重要。当前的自然语言处理方法包含基于规则和基于统计两种。统计语言模型往往利用马尔可夫假设：即任意一个词出现改了只和它前面的（一个）词有关；而且在进行数据预处理时往往会使用一些平滑方法，如卡茨退避法（出现频率低的词概率下调，下调的频率总和给未出现的值），线性插值法等。</p>
+<p>在中文自然语言处理中，往往需要进行分词，保证分完词后这个句子出现的概率最大。分词技术已经很完善，就算有提升也很有限，不值得研究。分词器应该支持不同层次的切分（原理：基本词表和复合词表），让应用决定粒度。还有些自然语言处理方法使用隐马尔可夫模型，通过转移概率和生成概率决定分下一个词。</p>
+<p>信息量等于不确定性的多少，也就是信息熵。信息的作用在于消除不确定性，自然语言处理中大量问题就是在寻找相关信息。对信息的度量包含信息熵、条件熵、交叉熵等。语言模型复杂度可以通过给定上下文，句子中每个位置平均可以选择的单词数量度量。</p>
+<p><strong>相似文本查询技术</strong></p>
+<p>技术分为术和道两种，具体的做事方法是术，做事的原理和原则是道。对于搜索而言，基本方法都是下载
+- 索引 -
+排序。索引包含分布式索引和分级索引。在搜索算法研究中，有一项常用的技术：网络爬虫。网络爬虫也叫做网络机器人，可以代替人们自动地在互联网中进行数据信息的采集与整理，包括对网页的下载。爬虫的下载顺序往往是BFS，已发现但未下载的网页会存在优先级队列里。爬虫判断网页是否已经下载过的方法通常是哈希表（分布式爬虫同步方法之一：在下载前就明确分工，从URL判断给哪个服务器下载，之后就可以批处理，每次问一大堆网页是否已经下载）。</p>
+<p>PageRank是一项度量网页质量的方法，与之结合的还有著名技术MapReduce。</p>
+<p>网页质量衡量：（以前）指向这个网页的网页
+（现在）用户的点击数据。（PageRank）</p>
+<p>网页排名的计算主要是矩阵相乘，这种计算很容易分解成小任务在多台计算机上并行处理。（MapReduce）</p>
+<p>对于搜索引擎而言，任务是给用户的查询返回高质量的网页。影响搜索引擎质量的因素有很多，包含用户点击数据、完备的索引、对网页质量的度量（现在PageRank的作用已经小很多了，如今对网页质量的度量是全方位的，比如对网页内容权威性的衡量）、用户偏好等。</p>
+<p>确定一个网页和某个查询的相关性基本都是通过搜索关键词权重的科学度量
+TF-IDF（词频的加权求和）确定。IDF的概念就是特定条件下关键词概率分布的交叉熵，一个词的信息量越大，w命中的文献中w平均出现的次数越多，TF-IDF值越大。</p>
+<p>对于搜索引擎而言，可能有网页采用不正当手段提高自己的排名（早期手段包括重复关键词、买卖网页链接等）。在通信中解决噪声干扰问题的基本思路是从信息源出发，加强通信（编码）自身的抗干扰能力；从传输来看，过滤掉噪声，还原信息。搜索引擎的反作弊工具包含余弦距离和图论。现代搜索引擎一般会计算网页权威度。权威度与一般的网页质量不同，它与要搜索的主题是相关的（这使得它的存储量非常大）。计算权威性的步骤：对每一个网页正文（包括标题）中的每一句话进行句法分析，然后找出涉及到主题的短语以及对信息源的描述。这样就获得了所谓的“提及”信息；利用互信息，找到主题短语和信息源的相关性；对主题短语进行聚合（聚类），得到一些搜索的主题（聚类方法可以采用前面提到的矩阵运算方法）；最后，对一个网站中的网页进行聚合，比如把一个网站下面的网页按照子域或子目录进行聚类，可以和PageRank那样加权重并通过迭代算法得到收敛后的权威度关联矩阵。</p>
+<p>与之类似的有智能手机的定位导航功能，它通常使用有限状态机和动态规划实现。利用卫星定位，对用户地址进行识别，根据用户输入的起点和终点，在地图上规划最短路线或最快路线。关键技术包含地址分析和有限状态机，基于概率的有限状态机和离散的马尔科夫链基本上等效，而全球导航的关键算法则是计算机科学图论中的动态规划算法。</p>
+<p><strong>文本分类技术</strong></p>
+<p>自然语言处理的另一项关键应用则是文本分类，例如对新闻的分类。计算机的本质只能做快速计算，在对新闻分类时，往往使用特征向量和余弦相似度进行。</p>
+<p>​ 新闻的特征向量：实词的TF-IDF值组成的向量。</p>
+<p>​ 向量距离的度量：余弦相似度</p>
+<p>​ 新闻分类：自底向上不断合并</p>
+<p>计算向量余弦的技巧：删除虚词（不仅可以提高计算速度，对新闻分类的准确性也大有好处，虚词实际上是一种噪声，干扰分类的正常进行）；位置的加权：对标题和重要位置的词进行额外的加权可以提高文本分类。这类新闻归类方法准确性很好适用于被分类的文本集合在百万数量级，如果达到亿级别，计算时间还是比较长，对于更大规模的文本处理需要更快速的方法。</p>
+<p>还会用到矩阵的奇异值分解（SVD）：</p>
+<p>​ A = XBY</p>
+<p>​ X：对词分类的结果</p>
+<p>​ Y：对文本分类的结果</p>
+<p>​ B：词的类和文章的类之间的关联性</p>
+<p>奇异值分解整个矩阵都要存在内存中，存储量较大，利用余弦定理的聚类不需要。相比于利用文本特征向量余弦距离的自底向上分类方法，奇异值分解可以较快地得到结果（不需要迭代），但分类结果略粗糙，适合超大规模文本的粗分类。在实际应用中，可以先进行奇异值分解得到粗分类结果再计算向量余弦，在粗分类的基础上进行几次迭代得到较为精确的结果。既节省时间又有很好的准确性。</p>
+<p><strong>信息指纹技术</strong></p>
+<p>信息指纹技术则更像是密码学领域的内容。理论上对信息进行无损压缩编码后对最短长度就是它的信息熵。任何一段信息都可以对应一个不太长的随机数作为区别这段信息和其他信息的指纹。通过伪随机数产生算法（PRNG)可以将任意很长的整数转换成特定长度的伪随机数。</p>
+<p>信息指纹的一个特征是不可逆性，无法根据信息指纹推出原有信息。在互联网上加密要使用机遇加密的伪随机数产生器（CSPRNG），常用的算法有SHA-1或MD5，可以将不定长的信息变成定长的128位或者160位二进制随机数。理论上SHA-1有漏洞，但离真正能攻破信息还有一段距离。对于集合相同的判定是计算两个集合的指纹然后直接进行比较；若要判定集合相同则是随机挑选比较指纹决定。</p>
+<p>对于相似网页的判定，也会用到信息指纹技术，包括网页和视频等内容。对于网页，会从每个正文中挑出几个词（IDF大的词）构成网页的特征词集合，然后计算和比较这些特征集合的信息指纹。视频的匹配则有两个核心技术：关键帧的提取和特征的提取。为了允许有一定的容错能力，Google采用了一种特定的信息指纹——相似哈希。相似哈希的特点是如果两个网页的相似哈希相差越小，这两个网页的相似性就越高，如果两个网页相同，它们的相似哈希必定相同。如果它们只有少数权重小的词不相同，其余的都相同，几乎可以肯定它们的相似哈希也会相同。如果两个网页的相似哈希不同但是相差很小，则对应的网页也非常相似。</p>
+<p>所谓信息指纹可以简单理解为一段信息（文字、图片、音频、视频等）随机映射到一个多维二进制空间中的一个点（一个二进制数字）。只要这个随机函数做得好，那么不同信息对应的这些点就不会重合，因此这些二进制的数字就成了原来信息所具有的独一无二的指纹。</p>
+<p>密码学史上有一种著名的密码：凯撒密码。但基于凯撒密码的原理，只需要多截获一些情报统计一下字母的频率，就可以破解出这种密码。而好的密码必须做到根据已知的明文和密文的对应推断不出新的密文内容（好的加密函数不应该通过几个自变量和函数值就能推出函数）。同文密电在密码学上是大忌（密码机加密时每次应该自动转一轮，以防同一密钥重复使用，因此即使是同一电文两次发送的内容也应该是不一样的）。根据信息论，密码的最高境界就是对方在截获密码后，对我方的信息量没有增加。一般来讲，当密码之间分布均匀并统计独立时，提供的信息最少。</p>
+<p>在现在密码学中，有公钥和电子签名的概念。公钥是公开的，私钥是私有的，例如Alice给Bob发消息，就要使用Bob公开的公钥来做加密，Bob再用自己的私钥进行解密即可。简单来说，公钥加密，私钥解密。电子签名刚好相反，比如大家想对Alice的签名进行验证，那么大家能获取的就是Alice公开的公钥，而签名则由Alice用自己的私钥进行签名。简单来说，私钥签名，公钥验证。公钥和电子签名算法的共同点：它们都有两个完全不同的密钥，一个用于加密，一个用于解密。这两个看上去无关的密钥，在数学上是关联的。</p>
+<p><strong>相关数学模型</strong></p>
+<p>一个正确的数学模型应当在形式上是简单的。一个正确的模型一开始可能还不如一个精雕细琢过的错误模型来的准确，但是如果我们认定大方向是对的就应该坚持下去。大量准确的数据对研发很重要，正确的模型也可能受噪声干扰而显得不准确，这时不应该用一种凑合的修正犯法进行弥补，而是要找到噪声的根源，这也许是一个重大的发现。</p>
+<p>最大熵模型告诉我们：保留全部的不确定性，将风险降到最小。最大熵原理：对一个随机事件的概率分布进行预测时，我们的预测应当满足全部的已知条件，而对未知的情况不要做任何主观假设。在这种情况下，概率分布最均匀，预测的风险最小。这种模型就叫最大熵模型。对任何一组不自相矛盾的信息，这个最大熵模型不仅存在，而且是唯一的。此外，它们都有一个非常简单的形式——指数函数。最大熵模型在形式上非常简单，但是在实现上却异常复杂，计算量特别大。最原始的最大熵模型的训练方法是一种称为通用迭代算法GIS的迭代算法。最大熵模型可以将各种信息整合到一个统一的模型中。</p>
+<p>拼音输入法的数学原理是将对汉字的编码分为两部分：对拼音的编码和消除歧义性的编码。而布隆过滤器背后的数学原理在于两个完全随机的数字相冲突的概率很小。因此可以在很小的误识别率条件下，用很少的空间存储大量信息。补救误识别的常见办法上再建立一个小的白名单，存储那些可能被误识别的信息。</p>
+<p>贝叶斯网络（Belief
+Networks）是加权的有向图，马尔可夫链的扩展。贝叶斯网络结构的训练和参数的训练通常是交替进行的，也就是先优化参数，再优化结构，然后再次优化参数，直至得到收敛或误差足够小的模型。从认识论的层面看，贝叶斯网络克服了马尔可夫链的机械的线性约束，可以把任何有关联的时间统一到它的框架下面。条件随机场则是一种特殊的概率图模型，变量之间遵守马尔可夫假设（每个状态的转移概率只取决于相邻的状态），类似贝叶斯网络，但贝叶斯网络是有向图，条件随机场是无向图。</p>
+<p>维特比算法可以用来解码任何使用隐马尔可夫模型描述的问题。维特比算法：如果概率最大的路径P经过某个点，那么这条路径上从起始点到这个点的最短路径一定是这条子路径。从起始点到终止点必定经过第i时刻的某个状态，假定第i时刻有k个状态，那么从起始点到这个点的最短路径，最终的最短路径一定经过其中一条。这样，这和时刻只需要考虑非常有限的最短路径。</p>
+<p>大多数和智能有关的问题都可以归结为一个在多维空间进行模式分类的问题，而人工神经网络所擅长的正是模式分类。人工神经网络和贝叶斯网络的差别：人工神经网络在结构上是完全标准化的，而贝叶斯网络更灵活；虽然神经元函数为非线性函数，但是各个变量只能先进行线性组合，最后对一个变量进行非线性变换，因此用计算机实现起来比较容易。而在贝叶斯网络中，变量可以组合成任意的函数，在获得灵活性的同时也增加了复杂性。贝叶斯网络更容易考虑上下文的相关性，因此可以解码一个输入的序列。而人工神经网络相对孤立，很难处理一个序列，因此它主要的应用常常是估计一个概率模型的参数，而不是作为解码器。</p>
+<p>区块链的数学基础在于不拥有信息却能验证信息：公私钥 + 账本 +
+智能合约（按照约定自动执行）。它使用椭圆曲线（上下对称，非常平滑，从曲线上任意一点画一条直线和曲线最多有三个交点）进行加密。</p>
+<p><strong>总结</strong></p>
+<p>对这本书的记录大致就是这些，原作值得一读，属于一本科普性质的书，看完后大概能了解自然语言处理的基本知识，但本文内容可能略显潦草。</p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/04/07/%E4%B8%89%E7%BB%B4%E7%82%B9%E4%BA%91%E5%9F%BA%E6%9C%AC%E5%A4%84%E7%90%86/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/covers/%E4%B8%89%E7%BB%B4%E7%82%B9%E4%BA%91.jpg">
+                </span>
+                <h6 class="trm-op-title">三维点云基本处理</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/04/07</li>
+                <li>10:20</li>
+                <li>点云</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/03/09/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%EF%BC%9APREDATOR-Registration-of-3D-Point-Clouds-with-Low-Overlap/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/covers/predator%E5%B0%81%E9%9D%A2.png">
+                </span>
+                <h6 class="trm-op-title">论文笔记：PREDATOR: Registration of 3D Point Clouds with Low Overlap</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/09</li>
+                <li>23:03</li>
+                <li>点云</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">阿曾</span>
+        </div>
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+    
+        <div class="trm-footer-item">
+            Welcome to my blog.
+        </div>
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+            
+<div class="trm-fixed-container">
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/plugins/typing.js?v=2.2.2"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/main.js?v=2.2.2"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

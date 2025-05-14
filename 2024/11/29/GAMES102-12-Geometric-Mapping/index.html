@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="Lecture 12 Geometric Mapping &amp; Geometry Optimization 映射：   这节课的主要内容是平面几何映射：R2 → R2 映射表达：   映射表达为基本映射（基函数）的线性组合  函数的分解 基函数的线性组合：        映射表达为小区域（三角形区域）上映射的拼接  区域的分解（映射的离散） 简单区域上映射的连续组合    几何映射的例子：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAMES102-12-几何映射 &amp; 几何优化">
+<meta property="og:url" content="https://spacezyx.github.io/2024/11/29/GAMES102-12-Geometric-Mapping/index.html">
+<meta property="og:site_name" content="Zeng">
+<meta property="og:description" content="Lecture 12 Geometric Mapping &amp; Geometry Optimization 映射：   这节课的主要内容是平面几何映射：R2 → R2 映射表达：   映射表达为基本映射（基函数）的线性组合  函数的分解 基函数的线性组合：        映射表达为小区域（三角形区域）上映射的拼接  区域的分解（映射的离散） 简单区域上映射的连续组合    几何映射的例子：">
+<meta property="og:locale">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="article:published_time" content="2024-11-29T06:56:33.000Z">
+<meta property="article:modified_time" content="2025-05-14T12:24:01.259Z">
+<meta property="article:author" content="阿曾">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://spacezyx.github.io/404.jpg">
+
+
+<title >GAMES102-12-几何映射 & 几何优化</title>
+
+<!-- Favicon -->
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="https://unpkg.com/hexo-theme-async@2.2.2/source/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["ZENG. WELCOME"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/images/covers/avatar.jpg","icon16":"/images/covers/avatar.jpg","icon32":"/images/covers/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/images/covers/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-14 20:24:01"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/images/covers/avatar.jpg">
+    
+    
+        <div class="trm-logo-text">
+            曾<span>曾</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            GAMES102-12-几何映射 & 几何优化
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/images/covers/avatar.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        阿曾
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/spacezyx" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                上海
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                24
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:1292171824@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            20:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            阿曾
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h3 id="lecture-12-geometric-mapping-geometry-optimization">Lecture 12
+Geometric Mapping &amp; Geometry Optimization</h3>
+<p>映射：</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145051806.png" alt="image-20241128145051806" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145105324.png" alt="image-20241128145105324" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>这节课的主要内容是平面几何映射：R<sup>2</sup> → R<sup>2</sup></p>
+<p>映射表达：</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145206053.png" alt="image-20241128145206053" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>映射表达为基本映射（基函数）的线性组合
+<ul>
+<li>函数的分解</li>
+<li>基函数的线性组合：</li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145342355.png" alt="image-20241128145342355" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145401607.png" alt="image-20241128145401607" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145413540.png" alt="image-20241128145413540" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145430667.png" alt="image-20241128145430667" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>映射表达为小区域（三角形区域）上映射的拼接
+<ul>
+<li>区域的分解（映射的离散）</li>
+<li>简单区域上映射的连续组合</li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145534645.png" alt="image-20241128145534645" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>几何映射的例子：</p>
+<ul>
+<li>2D变形
+<ul>
+<li>本质：插值问题</li>
+<li>求解方法：
+<ul>
+<li>插值法（如RBF插值）</li>
+<li>逼近法（能量极小法）</li>
+</ul></li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145639720.png" alt="image-20241128145639720" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li><p>Barycentric Coordinates（质心坐标）</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145813061.png" alt="image-20241128145813061" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+</ul>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128145903422.png" alt="image-20241128145903422" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>映射的性质</strong></p>
+<p>评价方式：双射和扭曲</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128150200489.png" alt="image-20241128150200489" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>判断是否发生了翻转：看雅可比行列式</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128150731237.png" alt="image-20241128150731237" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>局部双射和全局双射：</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128150757076.png" alt="image-20241128150757076" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Jacobian的几何意义：</p>
+<ul>
+<li>函数在某点的Jacobian度量了其局部的形变量</li>
+</ul>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128150925234.png" alt="image-20241128150925234" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>扭曲度量：</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128151000980.png" alt="image-20241128151000980" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>映射的优化模型</strong></p>
+<p>约束优化：</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128151101315.png" alt="image-20241128151101315" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>几何优化的求解</strong></p>
+<p>能量函数常用：</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128151247115.png" alt="image-20241128151247115" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>狄利克雷能量：</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128151318750.png" alt="image-20241128151318750" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>还有一些其它的方法：</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128151436705.png" alt="image-20241128151436705" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>几何优化</strong></p>
+<p>对于一般的函数来说，函数导数值为0的点不一定是极值点，也可能是驻点：</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128151631451.png" alt="image-20241128151631451" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>但凸函数的驻点就是最小值。</p>
+<p>优化问题类型：</p>
+<ul>
+<li>有约束/无约束</li>
+<li>线性/非线性</li>
+<li>全局/局部</li>
+<li>凸/非凸</li>
+<li>连续/离散</li>
+<li>随机/确定性</li>
+<li>单目标/多目标</li>
+</ul>
+<p><strong>无约束的优化问题</strong></p>
+<p><span class="math display">min<sub><em>x</em></sub><em>f</em>(<em>x</em>)</span></p>
+<ul>
+<li>梯度下降法 (Gradient descent)</li>
+<li>牛顿法(Newton’s method)</li>
+<li>拟牛顿法(Quasi‐Newton)</li>
+<li>坐标下降法(Coordinate descent)</li>
+</ul>
+<p><strong>等式约束的优化问题</strong></p>
+<p>拉格朗日乘数法</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128152144442.png" alt="image-20241128152144442" style="zoom: 67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>不等式约束的优化问题</strong></p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128152502531.png" alt="image-20241128152502531" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Convex Optimization 凸优化</strong></p>
+<p>凸函数能保证找到全局最小值</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128152547575.png" alt="image-20241128152547575" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>凸优化的主要方法：</p>
+<ul>
+<li>线性规划</li>
+<li>二次规划</li>
+<li>锥规划</li>
+<li>半定规则</li>
+</ul>
+<p>其它优化问题：</p>
+<ul>
+<li><p>非线性最小二乘</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128152808004.png" alt="image-20241128152808004" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>混合整数优化</p></li>
+</ul>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128152817544.png" alt="image-20241128152817544" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>几何处理中的优化问题：具有特殊的几何结构，往往能有特殊的优化方法</p>
+<p><img src="/images/GAMES-12-Geometric-Mapping/image-20241128152837106.png" alt="image-20241128152837106" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/11/29/GAMES102-13-Reconstruction/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES102-13-Reconstruction/image-20241114101704430.png">
+                </span>
+                <h6 class="trm-op-title">GAMES102-13-曲面重建</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/11/29</li>
+                <li>14:58</li>
+                <li>GAMES102课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/11/29/GAMES102-11-Surface-Parameterization/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES-11-Surface-Parameterization/image-20241122135607048.png">
+                </span>
+                <h6 class="trm-op-title">GAMES102-11-曲面参数化 &amp; 曲面简化</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/11/29</li>
+                <li>14:52</li>
+                <li>GAMES102课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">阿曾</span>
+        </div>
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+    
+        <div class="trm-footer-item">
+            Welcome to my blog.
+        </div>
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="Lecture 12
+Geometric Mapping &amp; Geometry Optimization"><a rel="nofollow" class="trm-toc-link" href="#lecture-12-geometric-mapping-geometry-optimization"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">Lecture 12
+Geometric Mapping &amp; Geometry Optimization</span></a></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/plugins/typing.js?v=2.2.2"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/main.js?v=2.2.2"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

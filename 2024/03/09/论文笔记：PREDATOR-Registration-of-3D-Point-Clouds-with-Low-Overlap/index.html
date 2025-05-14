@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="今天的主题是我在组会时分享的一篇论文，本着尽量把学习过程记录下来的想法，后续应该还会有这类博客。第一次写这类论文笔记可能会略显粗糙，但就先这样吧。 这是CVPR 2021的一篇研究点云配准方法的论文，叫《PREDATOR: Registration of 3D Point Clouds with Low Overlap》。 论文地址：[2011.13005] PREDATOR: Registrat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="论文笔记：PREDATOR: Registration of 3D Point Clouds with Low Overlap">
+<meta property="og:url" content="https://spacezyx.github.io/2024/03/09/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0%EF%BC%9APREDATOR-Registration-of-3D-Point-Clouds-with-Low-Overlap/index.html">
+<meta property="og:site_name" content="Zeng">
+<meta property="og:description" content="今天的主题是我在组会时分享的一篇论文，本着尽量把学习过程记录下来的想法，后续应该还会有这类博客。第一次写这类论文笔记可能会略显粗糙，但就先这样吧。 这是CVPR 2021的一篇研究点云配准方法的论文，叫《PREDATOR: Registration of 3D Point Clouds with Low Overlap》。 论文地址：[2011.13005] PREDATOR: Registrat">
+<meta property="og:locale">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="article:published_time" content="2024-03-09T15:03:05.000Z">
+<meta property="article:modified_time" content="2025-05-14T12:24:01.262Z">
+<meta property="article:author" content="阿曾">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://spacezyx.github.io/404.jpg">
+
+
+<title >论文笔记：PREDATOR: Registration of 3D Point Clouds with Low Overlap</title>
+
+<!-- Favicon -->
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="https://unpkg.com/hexo-theme-async@2.2.2/source/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["ZENG. WELCOME"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/images/covers/avatar.jpg","icon16":"/images/covers/avatar.jpg","icon32":"/images/covers/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/images/covers/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-14 20:24:01"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/images/covers/avatar.jpg">
+    
+    
+        <div class="trm-logo-text">
+            曾<span>曾</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            论文笔记：PREDATOR: Registration of 3D Point Clouds with Low Overlap
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/images/covers/avatar.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        阿曾
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/spacezyx" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                上海
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                24
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:1292171824@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            20:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            阿曾
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <p>今天的主题是我在组会时分享的一篇论文，本着尽量把学习过程记录下来的想法，后续应该还会有这类博客。第一次写这类论文笔记可能会略显粗糙，但就先这样吧。</p>
+<p>这是CVPR 2021的一篇研究点云配准方法的论文，叫《PREDATOR: Registration
+of 3D Point Clouds with Low Overlap》。</p>
+<p>论文地址：[<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2011.13005">2011.13005]
+PREDATOR: Registration of 3D Point Clouds with Low Overlap
+(arxiv.org)</a></p>
+<p>文章提出了一种针对低重叠区域情况下的点云配准模型PREDATOR，是一种基于学习的点云配准方法。有关点云配准的基本知识可以看上一篇博客。</p>
+<h4 id="基于学习的点云配准方法"><strong>基于学习的点云配准方法</strong></h4>
+<p>基于学习的点云配准方法主要有以下四步：特征提取 → 兴趣点采样 →
+特征匹配 → RANSAC(随机采样一致）</p>
+<p>特征提取：就是给每个点一个高维度特征（一般是32维度的）</p>
+<p>兴趣点采样：点云数据的输入可能是几十万个点，不可能用这么大的数据量去跑Feature
+matching或者RANSAC，这样做的内存开销太大。所以一般会取500个点
+1000个点去匹配，常见有random
+sampling（随机采样），也有方法认为要采样边界上的点或者角点这类特殊点会比较容易匹配正确。</p>
+<p>特征匹配：每个点找特征距离最近的点从而得到同名点对。</p>
+<p>随机采样一致：用同名点对去解变换方程的旋转矩阵R和平移向量t，最小化同名点对在特征空间的距离。</p>
+<h4 id="predator总体思路"><strong>PREDATOR总体思路</strong></h4>
+<p>点云配准：给定两个点云 <em>P = {pi ∈ R3|i = 1..N }</em> ，和<em>Q =
+{qi ∈ R3|i = 1..M }</em> ，目标是找到一个刚性变换 T 使 P 和 <em>Q</em>
+对齐。在Predator中，它的基本思路是重叠区域对于点云配准非常重要，单看一个点很难看出这个点是不是在重叠区域内，因为单个点没有重叠信息。而看一个patch（一小片）区域很容易看出是不是在重叠区域，所以关注的焦点是一小片区域，要在特征匹配时去匹配patch而部署point。</p>
+<h4 id="predator结构"><strong>PREDATOR结构</strong></h4>
+<p>Predator的结构主要包含Encoder、Overlap attention
+module和Decoder三部分。</p>
+<figure>
+<img src="/images/covers/predator结构.png" alt="Predator结构"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'>
+<figcaption aria-hidden="true">Predator结构</figcaption>
+</figure>
+<ul>
+<li>Encoder：将点云编码为更小的集合—superpoints。认为super
+point是一个patch</li>
+<li>Overlap attention
+module：提取两个点云的特征之间的上下文信息，并为每个superpoint分配两个重叠分数（衡量此superpoint及其匹配点位于重叠区域的可能性）。</li>
+<li>Decoder：将Overlap attention
+module的输出解码为特征表示Fp、重叠得分Op 、匹配得分 mp。</li>
+</ul>
+<p>接下来是对每个部分的详细介绍。</p>
+<p><strong>Encoder</strong></p>
+<p>Encoder部分首先使用体素网格滤波对原始点云做下采样，使得点云P
+Q具有合理均匀的点密度。随后又使用了一系列的ResNet-like blocks
+andstridedconvolutions对P Q特征提取和降采样到为一个superpoint的集合P’
+Q’，Xp’
+Xq’表示其对应的特征。这样每个superpoint就可以表征点云中的一个patch，或者说每个superpoint就包含了点云中的一个patch的信息。</p>
+<p><strong>Overlap attention module</strong></p>
+<p>Overlap attention
+module的目的是使得两个点云产生信息交互，从而找到重叠区域。主要步骤是夸大感受野
+→ 找到重叠区域 → 获得overlap-score，分别通过GNN
+Transformer和GNN实现。</p>
+<p>Graph convolutional neural
+network：在两个点云进行交互产生联系之前，使用图卷积网络扩大superpoint的感受野，使其能看到更多的上下文信息，学习到局部邻域点的信息，更好地描述点云中的一个patch。</p>
+<p>Cross-attention
+block：利用Transformer实现，通过对分别来自两个点云的superpoint进行两两比较，从而确定其是否位于重叠区域。如果superpoint
+pi′ 在 Q′ 中找到了一个与比较像的superpoint，那么 pi
+可能位于重叠区域。此过程是利用Transformer来实现的，也就是用P中的点找Q中的点，并用Q中点的信息更新P中点的特征。分别对P’
+Q’施加同样操作，可以实现信息流在PQ之间的交互。</p>
+<p>Overlap scores of the bottleneck
+points：上一步上下文信息更新是对独立地对每一个超点进行更新的，没有考虑每片点云内部的局部上下文。因此，在cross-attention
+block之后用另一个GNN网络去更新了内部上下文信息。可以理解成平滑或修正孤立点（3D中如果附近的点都在重叠区域，这个点大概率也在重叠区域）。然后将特征线性投影成overlap-scores，overlap-scores可以理解为某个点位于重叠区域的概率。</p>
+<p><strong>Decoder</strong></p>
+<p>上一步得到了overlap-scores，也就是某个点位于重叠区域的概率。但是事情还没完，这个点位于重叠区域中的概率确定了，但是这个点会在Q中找到一个和它很像的点，这个点在不在overlap里面也很重要，所以也要计算和它很像的点在overlap里面的概率。只有它和它对应的点都在重叠区域内才是所需要的正确的匹配，否则并不是正确匹配的。因此Decoder里面记录了又计算了匹配分数mp，代表预测出<em>Q</em>
+中点的overlap-score。拼接特征表示F，重叠得分o，匹配得分m就得到了Decoder的结果。</p>
+<h4 id="损失函数设计">损失函数设计</h4>
+<figure>
+<img src="/images/covers/predator损失函数设计.png" alt="损失函数"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'>
+<figcaption aria-hidden="true">损失函数</figcaption>
+</figure>
+<p>这篇文章的Loss由循环损失、重叠损失和可匹配性损失三部分组成。</p>
+<p><strong>循环损失</strong></p>
+<p>循环损失的目的可以理解成最小化类间相似度、最大化类内相似度。</p>
+<p>通过变换矩阵对P和Q进行变换对齐，首先提取在Q中至少有一个重叠的超点pi，假设Q中距离pi小于rp的点为正对（算Σp），在这个半径之外的点为负对（Σn）。然后在P中随机采样np个超点计算循环损失。</p>
+<p><strong>重叠损失</strong></p>
+<p>重叠概率估计可以当作二分类问题。重叠损失的目的是让点是否在重叠区域内的标签预测尽可能准确。overlap
+loss
+如果用变换矩阵T将点云P上一点pi变换到点云Q上，并在其邻域内找到一点，这两个点的距离很小，则认为pi是在重叠区域的，其label为1。</p>
+<p><strong>可匹配性损失</strong></p>
+<p>matchability loss 在特征空间上，寻找与pi
+特征相近的点，用变换矩阵T将pi变换到点云Q上一点，如果这两个点的距离很小，则认为这两个点是一对匹配点，其label为1。可匹配性和重叠概率一样，也是一个二分类问题，目的是尽可能多地找到可匹配的点。</p>
+<h4 id="实验结果">实验结果</h4>
+<p>用overlap 和 matchability
+score乘一下得到得分，作者比较了三种采样方法：Random、Top-k、Probablistic。</p>
+<p>Random：随机采样，作为baseline。</p>
+<p>Top-k：选取最好的k个点。</p>
+<p>Probablistic：Top-k + Random， 防止采样都在一个簇里。</p>
+<p>比较了两个指标：Inlier ration和Registration recall。</p>
+<p>Inlier
+ratio：在配准过程中，成功匹配的符合要求的点对数量与总点对数量之比。</p>
+<p>Registration recall：成功配准的点云对数与总点云对数之比。</p>
+<p>Registration recall衡量了成功配准的点云对的数量，而 Inlier ratio
+则更关注于匹配过程中点对的质量和匹配的准确性。</p>
+<p>从结果可以看出Top-k在Inlier ratio数值更好但Probablistic在Registration
+recall也就是最终结果中表现更佳。推测应该是Probablistic能找到一个更大的重叠区域去做点云配准，从而得到更好的效果。</p>
+<p>作者还做了一些其他的实验去比较Predator和其他方法，基本上都是Predator的效果比较好。但看Paper
+with code网站里从2022年开始应该还是有一些方法又超过了Predator的。</p>
+<h4 id="作者的叨叨">作者的叨叨</h4>
+<p>这篇博客大概就是这样了，不知道有没有人有耐心看到这里，这篇基本上是对整个方法思路的一个介绍，对文中涉及到的公式并没有做过多解释，有兴趣的可以去看看原文。</p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/03/26/%E3%80%8A%E6%95%B0%E5%AD%A6%E4%B9%8B%E7%BE%8E%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/covers/%E6%95%B0%E5%AD%A6%E4%B9%8B%E7%BE%8E.jpg">
+                </span>
+                <h6 class="trm-op-title">《数学之美》读书笔记</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/26</li>
+                <li>00:03</li>
+                <li>读书笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/03/08/%E7%82%B9%E4%BA%91%E5%9F%BA%E7%A1%80%E5%8F%8AICP%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/covers/ICP.png">
+                </span>
+                <h6 class="trm-op-title">点云基础及ICP方法介绍</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/03/08</li>
+                <li>15:20</li>
+                <li>随笔</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">阿曾</span>
+        </div>
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+    
+        <div class="trm-footer-item">
+            Welcome to my blog.
+        </div>
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+            
+<div class="trm-fixed-container">
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/plugins/typing.js?v=2.2.2"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/main.js?v=2.2.2"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

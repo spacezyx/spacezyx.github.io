@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="Lecture 07 Mesh 光滑（Smooth）曲线：  连续曲线：参数连续性（看导数）  光滑：高阶连续  几何曲线：  与参数化无关，更刻画了曲线形状的本征光滑性 更适合交互式曲线设计   光顺曲线（Curve fairing）：   左边光顺右边不光顺（从微观角度上去区分） 光顺没有一个统一的数学定义   曲线的曲率：   从宏观上看两条曲线一致，但从微观上两条曲线的曲率完全不同  对光">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAMES102-07-曲线光顺&amp;离散曲线&amp;三角网格">
+<meta property="og:url" content="https://spacezyx.github.io/2024/11/21/GAMES102-07-Mesh/index.html">
+<meta property="og:site_name" content="Zeng">
+<meta property="og:description" content="Lecture 07 Mesh 光滑（Smooth）曲线：  连续曲线：参数连续性（看导数）  光滑：高阶连续  几何曲线：  与参数化无关，更刻画了曲线形状的本征光滑性 更适合交互式曲线设计   光顺曲线（Curve fairing）：   左边光顺右边不光顺（从微观角度上去区分） 光顺没有一个统一的数学定义   曲线的曲率：   从宏观上看两条曲线一致，但从微观上两条曲线的曲率完全不同  对光">
+<meta property="og:locale">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="article:published_time" content="2024-11-21T12:00:38.000Z">
+<meta property="article:modified_time" content="2025-05-14T12:24:01.258Z">
+<meta property="article:author" content="阿曾">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://spacezyx.github.io/404.jpg">
+
+
+<title >GAMES102-07-曲线光顺&离散曲线&三角网格</title>
+
+<!-- Favicon -->
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="https://unpkg.com/hexo-theme-async@2.2.2/source/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["ZENG. WELCOME"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/images/covers/avatar.jpg","icon16":"/images/covers/avatar.jpg","icon32":"/images/covers/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/images/covers/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-14 20:24:01"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/images/covers/avatar.jpg">
+    
+    
+        <div class="trm-logo-text">
+            曾<span>曾</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            GAMES102-07-曲线光顺&离散曲线&三角网格
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/images/covers/avatar.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        阿曾
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/spacezyx" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                上海
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                24
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:1292171824@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            20:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            阿曾
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h3 id="lecture-07-mesh">Lecture 07 Mesh</h3>
+<p>光滑（Smooth）曲线：</p>
+<ul>
+<li>连续曲线：参数连续性（看导数）
+<ul>
+<li>光滑：高阶连续</li>
+</ul></li>
+<li>几何曲线：
+<ul>
+<li>与参数化无关，更刻画了曲线形状的本征光滑性</li>
+<li>更适合交互式曲线设计</li>
+</ul></li>
+</ul>
+<p><strong>光顺曲线</strong>（Curve fairing）：</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115095218155.png" alt="image-20241115095218155" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li><p>左边光顺右边不光顺（从微观角度上去区分）</p></li>
+<li><p>光顺没有一个统一的数学定义</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115095820105.png" alt="image-20241115095820105" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+</ul>
+<p>曲线的曲率：</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115095550106.png" alt="image-20241115095550106" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>从宏观上看两条曲线一致，但从微观上两条曲线的曲率完全不同</li>
+</ul>
+<p>对光顺的一些观察：</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115100311642.png" alt="image-20241115100311642" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>曲面光顺的新定义：</p>
+<p>一条曲线是光顺的，如果</p>
+<ul>
+<li>它是 C<sup>{1+l}</sup> ( l &gt; 0 )连续的</li>
+<li>它的曲线本身拐点较少</li>
+<li>它的曲率图的拐点较少</li>
+<li>它的曲率图变化的振幅相对小</li>
+</ul>
+<p>曲线的光顺方法：</p>
+<ul>
+<li>初光顺——定界法</li>
+<li>基本光顺——卡尺法</li>
+<li>精光顺——回弹法</li>
+</ul>
+<p>曲面的光顺也无严格定义，在工业界叫Class A曲面</p>
+<p>实现方法：</p>
+<ul>
+<li>三向曲线光顺</li>
+<li>能量法</li>
+</ul>
+<p><strong>离散曲线</strong></p>
+<p>曲线（形状）的不同表达方法：</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115101240020.png" alt="image-20241115101240020" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>几何迭代法（渐进迭代逼近） (progressive‐iterative approximation,
+PIA)</li>
+</ul>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115101419255.png" alt="image-20241115101419255" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>从连续到离散：</p>
+<ul>
+<li>对象的表达
+<ul>
+<li>在数学上，连续表达与计算</li>
+<li>在计算机中，离散表达与计算</li>
+</ul></li>
+<li>数值方法：数值微分、数值积分、数值优化
+<ul>
+<li>数值分析：离散计算对精确计算的近似程度</li>
+<li>Fourier分析/变换：离散Fourier分析/变换</li>
+<li>卷积（滤波）</li>
+</ul></li>
+<li>在计算机科学（计算机图形学）中，采样无处不在
+<ul>
+<li>计算机只能表达离散的数值</li>
+<li>例子：int型的数据（量化）</li>
+</ul></li>
+</ul>
+<p>曲线的离散化：将连续性表达转化为多边形表达（分段线性）</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115101555710.png" alt="image-20241115101555710" style="zoom:60%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>为何要离散化？</p>
+<ul>
+<li>渲染的必要性
+<ul>
+<li>算法和硬件：线段/圆的光栅</li>
+</ul></li>
+<li>计算的必要性
+<ul>
+<li>直线求交、多项式求根</li>
+</ul></li>
+<li>制造的必要性
+<ul>
+<li>刀具轨迹只能走直线段和圆弧</li>
+</ul></li>
+</ul>
+<p>曲线的离散：采样</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115101712557.png" alt="image-20241115101712557" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Bezier曲线的离散定理：</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115101730273.png" alt="image-20241115101730273" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>离散曲线的几何量的计算：</p>
+<ul>
+<li>如果有连续表达，利用连续表达的曲线来计算</li>
+<li>如无连续表达
+<ul>
+<li>差分法：利用差分形式来近似微分属性</li>
+<li>拟合法：利用光滑函数来拟合估计属性</li>
+</ul></li>
+<li>Tylor展开及估计</li>
+</ul>
+<p>重心坐标：一种用于描述空间中点的位置的方法，特别是在多边形或多面体内部，即描述内部点与边界点（控制顶点）之间的关联关系。</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115101931225.png" alt="image-20241115101931225" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>重心坐标的应用：</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115102222067.png" alt="image-20241115102222067" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>各种重心坐标的计算方法：</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115102242406.png" alt="image-20241115102242406" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>三角网格</strong></p>
+<p>绘制：离散表达</p>
+<ul>
+<li>曲线的绘制：
+<ul>
+<li>GDI/OpenGL 绘制基本单元：点、线段</li>
+<li>曲线须离散成多边形</li>
+</ul></li>
+<li>曲面的绘制：
+<ul>
+<li>OpenGL 绘制基本单元：点、线、三角形</li>
+<li>曲面须离散成三角形网格</li>
+</ul></li>
+</ul>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115102446508.png" alt="image-20241115102446508" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>流形（Manifold）：流形是一个局部类似于欧几里得空间的拓扑空间。具体来说，一个流形满足以下条件：</p>
+<ol type="1">
+<li>拓扑空间：流形是一个拓扑空间，这意味着它具有开集、闭集等拓扑结构。</li>
+<li>局部欧几里得性：在流形的每个点附近，都存在一个开集，这个开集与欧几里得空间中的开集同胚（即存在连续的双射，其逆也是连续的）。</li>
+<li>维度：流形具有固定的维度，即在每个点的邻域内，它都与相同维度的欧几里得空间同胚。</li>
+</ol>
+<p>流形的例子包括：</p>
+<ul>
+<li>平面、球面、环面等几何体。</li>
+<li>地球表面，尽管地球是一个三维空间中的球体，但在局部范围内，地球表面可以被看作是一个二维流形。</li>
+<li>某些复杂的几何形状，如莫比乌斯带，也是二维流形。</li>
+</ul>
+<p>非流形（Non-manifold）：非流形是指不满足流形定义的空间。它们可能在某些点或区域不具有局部欧几里得性质，或者在不同点的邻域具有不同的维度。非流形的例子包括：</p>
+<ol type="1">
+<li>具有边界的空间：例如，一个开放的立方体（不包括其边界）是一个三维流形，但如果包括边界，它就不再是流形，因为边界点不满足局部欧几里得性质。</li>
+<li>具有奇点的空间：例如，一个圆锥在顶点处不满足流形的定义，因为顶点处的邻域不与任何欧几里得空间同胚。</li>
+<li>不规则形状：某些不规则或分形形状可能在某些区域不满足流形的条件。</li>
+</ol>
+<p>区别：</p>
+<ul>
+<li>局部性质：流形在每个点的邻域内都具有与欧几里得空间相同的局部结构，而非流形可能在某些点或区域不具有这种结构。</li>
+<li>维度一致性：流形在整个空间中具有一致的维度，而非流形可能在不同区域具有不同的维度。</li>
+<li>拓扑结构：流形具有更严格的拓扑结构要求，而非流形可能在拓扑上更加复杂或不规则。</li>
+</ul>
+<p>往后提的处理都是针对流形的，如果存在非流形就把它去掉</p>
+<p>定义一个网格：</p>
+<p><img src="/images/GAMES102-07-Mesh/image-20241115103209237.png" alt="image-20241115103209237" style="zoom:60%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>存储网格有很多方式，可以直接用成熟的框架</p>
+<p>用的最多的结构是半边（half-edge）数据结构</p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/11/21/GAMES102-08-Differential-Geometry/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES102-08-Differential-Geometry/image-20241121100247225.png">
+                </span>
+                <h6 class="trm-op-title">GAMES102-08-离散微分几何</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/11/21</li>
+                <li>20:06</li>
+                <li>GAMES102课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/11/13/SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/SLAM%E5%8D%81%E5%9B%9B%E8%AE%B2%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/image-20241108101420736.png">
+                </span>
+                <h6 class="trm-op-title">《视觉SLAM十四讲》读书笔记</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/11/13</li>
+                <li>21:24</li>
+                <li>读书笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">阿曾</span>
+        </div>
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+    
+        <div class="trm-footer-item">
+            Welcome to my blog.
+        </div>
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="Lecture 07 Mesh"><a rel="nofollow" class="trm-toc-link" href="#lecture-07-mesh"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">Lecture 07 Mesh</span></a></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/plugins/typing.js?v=2.2.2"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/main.js?v=2.2.2"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

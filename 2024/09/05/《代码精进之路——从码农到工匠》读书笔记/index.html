@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="核心：整洁面向对象分层架构（Clean Object-oriented and Layered Architecture, COLA) 一共有三大部分：技艺部分、思想部分和实践部分。 技艺部分 技艺部分笔记比较简单，因为我的学习重点并不是Java。 第一章：命名 变量名应该是名词，能够准确描述业务，eg. int elapsedTimeInDays, SECONDS_PER_DAY。 函数名要具体">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《代码精进之路——从码农到工匠》读书笔记">
+<meta property="og:url" content="https://spacezyx.github.io/2024/09/05/%E3%80%8A%E4%BB%A3%E7%A0%81%E7%B2%BE%E8%BF%9B%E4%B9%8B%E8%B7%AF%E2%80%94%E2%80%94%E4%BB%8E%E7%A0%81%E5%86%9C%E5%88%B0%E5%B7%A5%E5%8C%A0%E3%80%8B%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Zeng">
+<meta property="og:description" content="核心：整洁面向对象分层架构（Clean Object-oriented and Layered Architecture, COLA) 一共有三大部分：技艺部分、思想部分和实践部分。 技艺部分 技艺部分笔记比较简单，因为我的学习重点并不是Java。 第一章：命名 变量名应该是名词，能够准确描述业务，eg. int elapsedTimeInDays, SECONDS_PER_DAY。 函数名要具体">
+<meta property="og:locale">
+<meta property="article:published_time" content="2024-09-04T17:30:45.000Z">
+<meta property="article:modified_time" content="2025-05-14T12:24:01.261Z">
+<meta property="article:author" content="阿曾">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+
+
+<title >《代码精进之路——从码农到工匠》读书笔记</title>
+
+<!-- Favicon -->
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="https://unpkg.com/hexo-theme-async@2.2.2/source/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["ZENG. WELCOME"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/images/covers/avatar.jpg","icon16":"/images/covers/avatar.jpg","icon32":"/images/covers/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/images/covers/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-14 20:24:01"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/images/covers/avatar.jpg">
+    
+    
+        <div class="trm-logo-text">
+            曾<span>曾</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            《代码精进之路——从码农到工匠》读书笔记
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/images/covers/avatar.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        阿曾
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/spacezyx" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                上海
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                24
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:1292171824@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            20:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            阿曾
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <p>核心：整洁面向对象分层架构（Clean Object-oriented and Layered
+Architecture, COLA)</p>
+<p>一共有三大部分：技艺部分、思想部分和实践部分。</p>
+<h3 id="技艺部分">技艺部分</h3>
+<p>技艺部分笔记比较简单，因为我的学习重点并不是Java。</p>
+<h5 id="第一章命名">第一章：命名</h5>
+<p>变量名应该是名词，能够准确描述业务，eg.
+<code>int elapsedTimeInDays</code>, <code>SECONDS_PER_DAY</code>。</p>
+<p>函数名要具体体现做什么，而不是怎么做，eg.
+<code>getLatestEmployee()</code>比<code>popRecord()</code>更好。</p>
+<p>类可分为实体类和辅助类，实体类承载核心业务数据和核心业务逻辑，命名要充分体现业务逻辑并在团队内达成共识，eg.<code>Customer</code>。辅助类辅佐实体类完成业务逻辑，命名要通过后缀体现功能，eg.<code>CustomerService</code>，同时尽量不用Helper/Util之类的后缀，因为含义太过笼统，容易破坏SRP(单一职责原则)，比如作者建议把<code>CSVHelper.parse(String)</code>和<code>CSVHelper.create(int [])</code>拆开成<code>CSVParser.parse(String)</code>和<code>CSVBuilder.create(int [])</code>。这点我存疑，感觉这样拆会让文件变得太多了，同一类操作应该可以合并，但有可能目前接触的都是小项目=-=。</p>
+<p>包（Package）代表一组有关系的类的集合，起到分类组合和命名空间的作用，包名应该能够反映一组类在更高抽象层次上的联系。</p>
+<p>模块（Module）包含了多个包，在Maven中，模块名就是一个坐标:&lt;groupId,
+artifactId&gt;，保证模块在Maven仓库中的唯一性。但同时其名称也应该反映模块在系统中的职责。</p>
+<p>命名时需要保持整个系统中的名称一致性，每个概念只有一个词（如get和find选一个），并使用对仗词（不出现fileOpen和fClose），并将限定词（Total/Sum/Average等）后置，保证命名风格统一。</p>
+<p>在交流时统一业务语言（对业务方和团队内、业务-文档-代码之间）都应该使用同一种编程语言。技术语言也应该统一，如DO、DAO、DTO、Service、ServiceImpl、Component和Repository等。</p>
+<p>用中间变量可以将隐藏的计算过程以显性化的方式表达出来；在命名上体现设计模式也可以让代码更容易理解。</p>
+<h5 id="第二章规范">第二章：规范</h5>
+<p>代码规范（缩进、水平对齐、注释格式等）应该统一。</p>
+<p>空行组合相关的概念或功能。</p>
+<p>Java的命名约定：</p>
+<ul>
+<li>类名大驼峰</li>
+<li>方法小驼峰</li>
+<li>常量命名全大写，单词之间下划线连接</li>
+<li>枚举类以Enum或Type结尾，枚举类成员名称全大写，单词间用下划线连接</li>
+<li>抽象类用Abstract开头；异常类用Exception结尾；实现类用Impl结尾；测试类以要测试的类名开头以Test结尾</li>
+<li>包名统一小写，点分隔符之间有且仅有一个自然语义的英文单词，包名统一使用单数形式。通常以org或com开头，加上公司名，再加上组件或者功能模块名，eg.
+<code>org.springframework.beans</code></li>
+</ul>
+<p>日志规范：分为OFF、FATAL、ERROR、WARN、INFO、DEBUG、ALL或自定义的级别，比较有用的是ERROR、WARN、INFO、DEBUG。</p>
+<ol type="1">
+<li>ERROR.
+表示不能自己恢复的错误，需要立即被关注或解决，如数据库操作错误、
+I/O错误、未知的系统错误。ERROR不仅要打印线程堆栈，最好打印出一定的上下文以便排查问题，同时要接入监控和报警系统，因为ERROR需要人工介入处理。</li>
+<li>WARN.
+可预知的业务问题，如校验参数不通过、没有访问权限等业务异常，短时间内产生过多的WARN日志也需要关注，所有有必要为WARN配置一个适当阈值的报警。</li>
+<li>INFO.
+记录系统的基本运行过程和运行状态，协助排查问题。主要包括系统状态变化日志、业务流程的核心处理、关键动作和业务流程的状态变化。</li>
+<li>DEBUG.
+调试输出信息，在开发或预发环境下打开方便开发和调试，线上环境则需要关闭，因为日志量非常大。</li>
+</ol>
+<p>异常处理这里只提了UnChecked异常（在运行时发生的，用于表示编码错误），设计了BizException（业务异常）和SysException（系统异常），做统一的类似AOP的处理，在应用处理请求的切面上进行异常处理收敛。不能再业务处理内部到处使用try/catch打印错误日志。</p>
+<p>错误码应该在系统搭建之初就制定好相应的规范。对于平台、底层信息或软件产品，可以采用编号式的编码规范（风格固定，正式，但需要配合文档才能看懂），eg.<code>IRA-00001~ORA-02149</code>这种编号式的对不同的错误波段要预留足够的码号；内部系统使用的服务更推荐用显性化的错误码，灵活性更强，比如定义成<code>类型+场景+自定义标识</code>。</p>
+<p>埋点规范，为了后续的数据分析设计，确保被采集上了的数据能够被统计分析（类似协议，我的理解是有点像DNS查找IP的设计），典型例子如阿里巴巴的超级位置模型（Super
+Position Model, SPM）。标准的SPM编码一共四段，<code>a.b.c.d</code>：</p>
+<ul>
+<li><ol type="a">
+<li>站点类型</li>
+</ol></li>
+<li><ol start="2" type="a">
+<li>外站ID</li>
+</ol></li>
+<li><ol start="3" type="a">
+<li>b站点上的频道ID</li>
+</ol></li>
+<li><ol start="4" type="a">
+<li>c频道上的页面ID</li>
+</ol></li>
+</ul>
+<h5 id="第三章函数">第三章：函数</h5>
+<p>函数是最通用的叫法（函数式语言和面向对象语言都行），方法是面向对象语言中对函数的叫法。</p>
+<p>将解释条件意图（if和while语句中的布尔逻辑）作为函数抽离出来，通过函数名把判断条件的语义显性表达可以大大提升代码的可读性和可理解性。</p>
+<p>总体而言，参数越少越容易理解。如果函数需要三个以上参数，说明有一些参数可以封装成类。</p>
+<p>函数代码要求短小，从而易于理解和维护，作者建议Java语言的函数不要超过20行。同时，函数应该遵循单一职责原则（SRP）。</p>
+<p>应该精简辅助代码，如判空、打印日志、鉴权、降级和缓存检查等，不让它过多干扰业务代码。</p>
+<ul>
+<li>优化判空：Java8引入的新特性Optional类，主要解决空指针异常。Optional类是一个包含可选值的包装类，也就是Optional类既可以含有对象，也可以为空，用这个特性可以代替冗长的null检查。</li>
+<li>优化缓存判断：用注解方式重构代码。（这个不太懂，得需要用的时候查一下）</li>
+<li>优雅降级：不在业务逻辑里用try/catch做异常情况下的服务降级，用Spring
+Cloud Hystrix提供的API，用注解的方式定义降级服务。</li>
+</ul>
+<p>组合函数模式可以提升代码可读性和可维护性，要求公有函数（入口函数）读起来像一系列执行步骤的概要，而这些步骤的真正实现细节在私有函数里。</p>
+<p>抽象层次一致性（Single Level of Abstration Principle,
+SLAP）是和组合函数密切相关的一个原则。组合函数要求将一个大函数拆成多个子函数的组合，而SLAP要求函数体中的内容必须在同一个抽象层次上，如果高层次抽象和底层细节融合在一起就会现得凌乱而难以理解。满足SLAP实际上构筑了代码结构的金字塔，金字塔是一种自上而下的、每一层属于同一个逻辑范畴和抽象层次的结构，符合人类思维逻辑的表达方式。</p>
+<p>函数式编程和面向对象编程没有本质区别。函数式编程中，函数不仅可以调用函数，也可以作为参数被其他函数调用。从这个角度看，对象在作为值被传递时，也是对业务逻辑的封装，只不过它不仅包含函数，还包含属性。（Java8引入了函数式编程）把函数作为值传递给另一个函数的功能重要的主要原因：</p>
+<ul>
+<li>减少冗余代码，让代码更简洁，可读性更好。</li>
+<li>函数是“无副作用”的，即没有对共享的可变数据操作，可以利用多核并行处理，而不用担心线程安全问题。</li>
+</ul>
+<h5 id="第四章设计原则">第四章：设计原则</h5>
+<p>SOLID原则：</p>
+<ul>
+<li>单一职责原则（SRP）：接口职责应该单一，不要承担过多的职责。</li>
+<li>开闭原则（OCP）：软件应该对扩展开放，对修改关闭。当别人要修改软件功能的时候，使得他不能修改我们原有代码，只能新增代码实现软件功能修改的目的。面向对象中常常用继承和多态实现OCP，还有装饰者模式、策略模式、适配器模式、观察者模式等。</li>
+<li>里氏替换原则（LSP）：所有父类能出现的地方，子类就可以出现，并且替换了也不会出现任何错误。如果在程序中出现instance
+of、强制类型转换或者函数覆盖，就很有可能违背LSP。</li>
+<li>接口隔离原则（ISP）：类间的依赖关系应该建立在最小的接口上。简单地说：接口的内容一定要尽可能地小，能有多小就多小。用ISP可以将外部依赖降到最小，有利于降低模块之间的耦合度。</li>
+<li>依赖倒置原则（DIP）：模块之间交互应该依赖抽象而非实现。高层模块不应该依赖底层模块，两者都应该依赖其抽象。抽象不应该依赖细节，细节应该依赖抽象。典型表现是面向接口编程。</li>
+</ul>
+<p>除此之外，作者还提到了一些设计原则。</p>
+<ul>
+<li>DRY：Don’t Repeat Yourself，在程序中应该避免重复代码。</li>
+<li>YAGNI：You Ain’t Need It.
+除了核心功能外，其他的功能一概不要提前设计，可以大大加快开发进程。（和DRY冲突，所以有了Rule
+of Three原则）</li>
+<li>Rule of
+Three：三次原则，即当某个功能第三次出现时，就有必要进行抽象化了。</li>
+<li>KISS：Keep It Simple and Stupid，设计越简单越好。</li>
+<li>POLA：Principle of Least
+Astonishment，最小惊奇原则，写代码越简单易懂越好。</li>
+</ul>
+<h5 id="第五章设计模式">第五章：设计模式</h5>
+<p>模式是理论和实践之间的中介环节，系统的设计模式不是含有设计模式就好，也不是含有越多设计模式越好。</p>
+<p>GoF设计模式中收录了23种设计模式。根据模式所完成的工作类型来划分，模式可分为创建型模式、结构型模式和行为型模式。</p>
+<p>创建型模式：描述怎样创建对象，主要特点是将对象的创建与使用分离。</p>
+<ul>
+<li>单例（Singleton）模式：类只能产生一个实例，保证全局使用的是同一对象。</li>
+<li>原型（Prototype）模式：将一个对象作为原型，通过对其进行复制而克隆出多个和原型类似的新实例。</li>
+<li>工厂方法（FactoryMethod）模式：定义一个用于创建产品的接口，由子类决定生产什么产品。</li>
+<li>抽象工厂（AbstractFactory）模式：提供一个创建产品族的接口，其每个子类可以生产一系列相关的产品。</li>
+<li>建造者（Builder）模式：将一个复杂对象分解成多个相对简单的部分，然后根据不同需要分别创建它们，最后构建成该复杂对象。</li>
+</ul>
+<p>结构型模式：描述如何将类或对象按某种布局组成更大的结构。</p>
+<ul>
+<li>代理（Proxy）模式：为某对象提供一种代理以控制对该对象的访问。即客户端通过代理间接地访问该对象，从而限制、增强或修改该对象的一些特性。</li>
+<li>适配器（Adapter）模式：将一个类的接口转换成客户希望的另外一个接口，使得原本由于接口不兼容而不能一起工作的那些类能一起工作。</li>
+<li>桥接（Bridge）模式：将抽象与实现分离，使它们可以独立变化。它是用组合关系代替继承关系来实现的，从而降低了抽象和实现这两个可变维度的耦合度。</li>
+<li>装饰（Decorator）模式：动态地给对象增加一些职责，即增加其额外的功能。</li>
+<li>外观（Facade）模式：为多个复杂的子系统提供一个一致的接口，使这些子系统更加容易被访问。</li>
+<li>享元（Flyweight）模式：运用共享技术来有效地支持大量细粒度对象的复用。</li>
+<li>组合（Composite）模式：将对象组合成树状层次结构，使用户对单个对象和组合对象具有一致的访问性。</li>
+</ul>
+<p>行为型模式：描述类或对象之间怎样相互协作共同完成单个对象无法单独完成的任务，以及怎样分配职责。</p>
+<ul>
+<li>模板方法（Template
+Method）模式：定义一个操作中的算法骨架，将算法的一些步骤延迟到子类中，使得子类在可以不改变该算法结构的情况下重定义该算法的某些特定步骤。</li>
+<li>策略（Strategy）模式：定义了一系列算法，并将每个算法封装起来，使它们可以相互替换，且算法的改变不会影响使用算法的客户。</li>
+<li>命令（Command）模式：将一个请求封装为一个对象，使发出请求的责任和执行请求的责任分割开。</li>
+<li>职责链（Chain of
+Responsibility）模式：把请求从链中的一个对象传到下一个对象，直到请求被响应为止。通过这种方式去除对象之间的耦合。</li>
+<li>状态（State）模式：允许一个对象在其内部状态发生改变时改变其行为能力。</li>
+<li>观察者（Observer）模式：多个对象间存在一对多关系，当一个对象发生改变时，把这种改变通知给其他多个对象，从而影响其他对象的行为。</li>
+<li>中介者（Mediator）模式：定义一个中介对象来简化原有对象之间的交互关系，降低系统中对象间的耦合度，使原有对象之间不必相互了解。</li>
+<li>迭代器（Iterator）模式：提供一种方法来顺序访问聚合对象中的一系列数据，而不暴露聚合对象的内部表示。</li>
+<li>访问者（Visitor）模式：在不改变集合元素的前提下，为一个集合中的每个元素提供多种访问方式，即每个元素有多个访问者对象访问。</li>
+<li>备忘录（Memento）模式：在不破坏封装性的前提下，获取并保存一个对象的内部状态，以便以后恢复它。</li>
+<li>解释器（Interpreter）模式：提供如何定义语言的文法，以及对语言句子的解释方法，即解释器。</li>
+</ul>
+<p>这23种设计模式并不是孤立存在的，很多模式之间存在一定的关联关系。在大型系统开发中常常会同时使用多种设计模式。</p>
+<p>拦截器模式是指通过提供一种通用的扩展机制，可以在业务操作前后提供一些切面的操作，这些切面操作通常是和业务无关的，如日志记录、性能统计、安全控制、事务处理、异常处理和编码转换等。拦截器模式和面向切面编程AOP的思想很相似，但比AOP的实现方式添加和删除更灵活；插件模式扩展发生在软件外部，新扩展以一个单独的组件（比如jar包）的方式加入到软件中，软件本身不需要重新编译、打包；而管道模式则体现了一种分治的思想。</p>
+<h5 id="第六章模型">第六章：模型</h5>
+<p>无论使用那种建模工具和表示法，只要有助于对问题域的理解，均可认为是好的模型。根据使用场景的不同，模型大致可以分为物理模型、概念模型、数学模型和思维模型等。</p>
+<p>UML分为结构型和行为型建模图形：</p>
+<ul>
+<li>UML结构型图：类图、对象图、组件图、部署图、包图、组合结构图</li>
+<li>UML行为型图：用例图、顺序图、通信图、状态机图、活动图、时间图、交互概念图</li>
+</ul>
+<p>类封装了数据和行为，每个类具有一定的职责，需要完成一定的功能、承担一定的义务。</p>
+<p>类图用于描述类以及它们的相互关系，类图中的两个基本元素是类，以及类之间的关系。</p>
+<p>领域模型是从业务场景出发对软件开发过程进行整合的模型。软件开发的过程本质上就是问题空间到解决方案空间的一个映射转化，就软件系统来说，问题空间就是系统要解决的领域问题。一个领域可以简单理解为一个问题空间，是一个特定单位边界内业务需求的综合。领域模型就是解决方案空间，是针对特定领域里的关键事务及其关系的可视化表现，是为了准确定义需要解决问题而构造的抽象模型，是业务功能场景在软件系统里的映射转化，其目标是为软件系统构建统一的认知。</p>
+<p>敏捷建模的重点是用简单的工具创建简单的模型，创建的模型能用来沟通和理解并且适应变化的需求，如果模型没有价值，不能加速软件的交付就不应该创建它们。</p>
+<p>广义模型：除了UML以外，还有一些可以实现对复杂问题进行抽象的模型。</p>
+<p>C4模型：使用上下文（Context）、容器（Container）、组件（Component）和代码（Code）等一系列分层的图表来描述不同缩放级别的软件架构。</p>
+<p>UI流程图：用页面之间的流转描述系统交互流程。</p>
+<p>业务模型：用图形化的方式描述业务。</p>
+<h5 id="第七章ddd的精髓">第七章：DDD的精髓</h5>
+<p>DDD，领域驱动设计。DDD的革命性在于领域驱动设计是面向对象分析的方法论，它可以利用面向对象的特性（封装、多态）有效地化解复杂性。DDD在类里面除了属性之外，还包含了行为和业务逻辑。</p>
+<p>DDD中关注的是业务中的领域划分和领域建模，其开发过程不再以数据模型为起点，而是以领域模型为出发点。领域模型对应的是业务实体，在程序中主要体现为类、聚合根和值对象，它更关注业务语义的显性化表达，而不是数据的存储和数据之间的关系。</p>
+<p>显然，领域模型和数据模型并不是意义对应的关系，大部分情况都需要做一层映射。为了你不二者之间的差异，有了对象关系映射（ORM）。但现在使用最多的是MyBatis，它很简单，完全不理会复杂的关系和对象之间的复杂关系映射，只做数据库表和DO之间的简单映射。</p>
+<p>DDD的好处：</p>
+<ul>
+<li>统一语言：业务和技术的一种共同语言。</li>
+<li>面向对象：DDD强调业务抽象和面向对象编程，而不是过程式业务逻辑实现。重点不同，导致编程世界观不同。</li>
+<li>业务语义显性化：能够让代码尽量体现领域实体和实体之间的关系原貌。</li>
+<li>分离业务逻辑和技术细节：Entities只需要安心处理业务逻辑。</li>
+</ul>
+<p>DDD的核心概念：</p>
+<ul>
+<li>领域实体：其实就是对应到现实世界中的事物</li>
+<li>聚合根：更大范围的封装，把一组相同生命周期、在业务上不可分割的实体和值对象放在一起，只有根实体可以对外暴露引用。在数据变化时必须保持一致性规则。</li>
+<li>领域服务：一些动作并不属于任何对象，但代表领域中的一个重要行为，则将它声明成一个服务（如转账行为）。识别领域服务，主要看它是否满足：①
+服务执行的操作代表了一个领域概念，这个概念无法自然地隶属于一个实体或者值对象
+② 被执行的操作涉及领域中的其他对象 ③ 操作是无状态的。</li>
+<li>领域事件：在一个特定领域由一个用户动作触发的，是发生在过去的行为产生的事件，而这个事件是系统中的其他部分或者关联系统感兴趣的。在分布式环境下尤为重要，消息是分布式系统互通的重要手段。关于领域事件，需要注意事件命名和事件内容。</li>
+<li>边界上下文：作用是限定模型的应用范围。在同一个上下文中，要保证模型在逻辑上的统一，而不用考虑它是不是适用于边界之外的情况。不同的上下文实体之间交互可以通过上下文映射（防腐层）来实现。</li>
+</ul>
+<p>领域建模方法：</p>
+<ul>
+<li>用例分析法：通过识别名词获取概念类和属性，通过识别动词寻找关联，再对模型进行精化。</li>
+<li>四色建模法：以满足业务需要为前提，寻找业务关键时刻、角色、人-事-物和描述，从而构建领域模型。</li>
+</ul>
+<p>具体DDD的应用在后面第13章。</p>
+<h3 id="思想">思想</h3>
+<h5 id="第八章抽象">第八章：抽象</h5>
+<p>抽象就是简化事物，抓住事物本质的过程，需要对概念或现象的信息进行过滤，移除不相关的信息，只保留与某种最终目的相关的信息。抽象是面向对象的基础。</p>
+<p>层次越往上，抽象程度越高，它所包含的东西就越多，其含义越宽泛，忽略的细节也就越多；层次越往下，抽象程度越低，它所包含的东西越少，细节越多。也就是，内涵越小，外延越大；内涵越大，外延越小。不同层次的抽象会有不同的用途。</p>
+<p>如何进行抽象：</p>
+<ul>
+<li>寻找共性：抽象的过程就是合并同类项、归并分类和寻找共性的过程。</li>
+<li>提升抽象层次：当发现有些东西无法归到一个类别中时，可以通过上升一个抽象层次的方式，让它们在更高的抽象层次上产生逻辑关系。</li>
+<li>构筑金字塔：要自下而上地思考，总结概括；自上而下地表达，结论先行。</li>
+</ul>
+<h5 id="第九章分治">第九章：分治</h5>
+<p>分治就是在开发工作中灵活使用分层、分步骤、分场景的解决方法。分治的典型应用包含：</p>
+<p>分治算法：二分查找、归并排序等。</p>
+<p>函数分解：让函数满足职责单一的原则，并且在函数组合时保证抽象层次一致性。</p>
+<p>代码优化：写代码时第一次实现功能、理清逻辑，第二次重构优化。</p>
+<p>分治模式：管道模式、责任链模式和装饰者模式等都暗含了分治的思想。</p>
+<p>分层设计：在架构体系设计中使用分层设计，分离关注，每一层只对上一层负责，每一层的职责相对简单。如ISO七层网络模型、TCP/IP四层模型。</p>
+<p>横切和竖切：数据库的水平拆分和垂直拆分。</p>
+<h5 id="第十章技术人的素养">第十章：技术人的素养</h5>
+<p>优秀的技术人员具有的特质：</p>
+<ul>
+<li>不教条：不有样学样，会根据情况灵活变通，比如在不同迭代中使用不同开发模式、使用不同方法控制代码的复杂度等</li>
+<li>批判性思维：保持思考的自主性和逻辑的严密性，不被动全盘接受，也不刻意带着偏见去驳斥一个观点</li>
+<li>成长型思维：把每一次失败当成学习的机会</li>
+<li>结构化思维：逻辑+套路，在分析和表达时使用有条理的语言和合理的结构。特别地，在进行汇报时可以使用“提出问题
+→ 定义问题 → 分析问题 → 解决问题 →
+展望未来”的结构化表达，还有另一种有用的思维框架是“zoom in/zoom
+out”，也就是说事情时，应该像电影镜头一样，先从远拉近，再由近拉远</li>
+<li>工具化思维：高效工作，使用工具完成重复性劳动</li>
+<li>好奇心：持续学习，深入钻研</li>
+<li>记笔记：知识内化，形成知识体系，方便回顾</li>
+<li>有目标：先想清楚目标，再去努力实现</li>
+<li>选择的自由：发挥主观能动性，为自己过去、现在及未来的行为买单</li>
+<li>平和的心态：“动机至善，了无私心；用无为的心，做有为的事。”</li>
+<li>精进：每天进步一点点</li>
+</ul>
+<h5 id="第十一章技术leader的修养">第十一章：技术Leader的修养</h5>
+<p>技术Leader和其他类型的Leader有些不同，在团队中作为技术Leader要尤为注意一些方面：</p>
+<ul>
+<li>技术氛围：技术Leader需要关心技术细节，而不是将绩效完全与业务KPI绑定。
+<ul>
+<li>代码分享：团队中分享写好代码的心得和经验，分享好/坏味道代码</li>
+<li>技术分享：通过准备分享和倾听分享学习</li>
+<li>CR周报：将Code Review的结果透明化</li>
+<li>读书会：持续学习</li>
+</ul></li>
+<li>目标管理：花时间和下属一起讨论、制定目标，并在过程中给予帮助和指导，及时对焦纠偏，确保目标达成。
+<ul>
+<li>OKR：目标与关键成果，注重短期利益和长期战略之间的平衡。OKR可以不和绩效挂钩，主要强调沟通和方向。相比KPI多一个层级的概念，O（objective）有一定模糊性，但KR（key
+results）需要是可量化的，KR为O服务，不能偏离O的方向。</li>
+<li>SMART原则：Specific - Measurable - Attainable - Relevent - Time
+bound，不管是OKR还是KPI的设定，都需要满足SMART原则。</li>
+<li>OKR设定：O需要有野心，只有高远的目标才能最大程度地激发人的潜能。</li>
+</ul></li>
+<li>技术规划：从团队视角看接下来要做的事情，可以从当前问题（痛点、坑点）、技术领域（性能、稳定性、工程效能）、业务领域（业务特定、技术诉求）、团队特色（差异化、竞争力）四个层次分别定义问题并制定策略。</li>
+<li>推理阶梯：作为管理者不要轻易对员工做推理，要实事求是、尊重事实。不要随意地使用推理阶梯进行自我推理而非沟通的方式来解决问题。</li>
+<li>何为Leader：Manager是管理事务，是控制和权威；而Leader是领导人心，是引领和激发。Leader要做一些Manager的管理事务，但管理绝不是Leader工作的全部。技术Leader区别与其他Leader之处在于不仅要“以德服人”，还要“以技服人”。要带好一个技术团队，技术Leader要对技术有热情，有一定技术能力，并帮助团队成员提升自我，有所成长。</li>
+<li>视人为人：和团队建立情感链接和信任关系后才能更好地开展工作。
+<ul>
+<li>对待上级——有胆量</li>
+<li>对待平级——有肺腑</li>
+<li>对待下级——有心肝</li>
+</ul></li>
+</ul>
+<h3 id="实践">实践</h3>
+<h5 id="第十二章cola架构">第十二章：COLA架构</h5>
+<p>软件架构可以分为：</p>
+<ul>
+<li>业务架构：顶层设计，它对业务的定义和划分会影响组织架构和技术架构。</li>
+<li>应用架构：根据业务场景的需要，设计应用的拓扑结构，制定应用规范、定义接口和数据交互协议等，并尽量将用于的复杂度控制在一个可以接受的水平，在快速支持业务发展的同时确保系统的可用性和可维护性。COLA架构就是一个典型的应用架构，致力于应用复杂度的管理。</li>
+<li>系统架构：根据业务情况综合考虑系统的非功能性要求，做出技术选型。</li>
+<li>数据架构：对数据收集、处理过程提供统一的服务和标准。</li>
+<li>物理架构：规划软件元件是如何放到硬件上的。</li>
+<li>运维架构：复杂运维系统的规划、选型、部署上线，建立规范化的运维体系。</li>
+</ul>
+<p>典型的应用架构有：</p>
+<ul>
+<li>分层架构</li>
+<li>命令查询分离架构CQRS</li>
+<li>六边形架构（端口-适配器架构）</li>
+<li>洋葱架构</li>
+<li>DDD（实际上是一种开发思想，而不是架构，但是它是很多架构的来源）</li>
+<li>COLA架构</li>
+</ul>
+<h5 id="第十三章工匠平台">第十三章：工匠平台</h5>
+<p>工匠平台实际上是阿里内部收集技术人员指标并对其进行评分和统计，客观反映技术人员的技术贡献的平台。技术度量表如下，本书中是作为COLA架构的一个典型应用，具体内容就不在笔记中记录了。</p>
+<table>
+<colgroup>
+<col style="width: 12%">
+<col style="width: 28%">
+<col style="width: 59%">
+</colgroup>
+<thead>
+<tr>
+<th style="text-align: left;">维度</th>
+<th style="text-align: left;">度量</th>
+<th>指标</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">应用质量</td>
+<td style="text-align: left;">应用</td>
+<td>重复代码数，长方法数，圈复杂度超标数，破坏规范数</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术影响力</td>
+<td style="text-align: left;">ATA文章</td>
+<td>文章浏览数，点赞数，评论数，收藏数</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术影响力</td>
+<td style="text-align: left;">分享</td>
+<td>分享范围，分享次数</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术影响力</td>
+<td style="text-align: left;">专利</td>
+<td>作者类型（第一作者或其他），专利数</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术影响力</td>
+<td style="text-align: left;">论文</td>
+<td>作者类型（第一作者或其他），论文数</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术贡献</td>
+<td style="text-align: left;">代码审查（Code Review）</td>
+<td>CR评论数</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术贡献</td>
+<td style="text-align: left;">重构</td>
+<td>重构范围，数量</td>
+</tr>
+<tr>
+<td style="text-align: left;">技术贡献</td>
+<td style="text-align: left;">亮点</td>
+<td>需要人工评定</td>
+</tr>
+<tr>
+<td style="text-align: left;">开发质量</td>
+<td style="text-align: left;">Bug</td>
+<td>千行代码缺陷率，代码提交量</td>
+</tr>
+<tr>
+<td style="text-align: left;">开发质量</td>
+<td style="text-align: left;">故障</td>
+<td>线上故障数，故障等级</td>
+</tr>
+</tbody>
+</table>
+<p>COLA是一个开源的架构，这边也把Github链接放过来了。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/alibaba/COLA">alibaba/COLA: 🥤 COLA:
+Clean Object-oriented &amp; Layered Architecture (github.com)</a></p>
+<h3 id="读后感">读后感</h3>
+<p>起初只是想随便看些书，让自己不要在一天天写基金本子这些抽象文字的同时忘了曾经也是想过搞技术的。最开始的技艺部分之前多多少少都有接触过，只不过再看一遍能更加系统化地梳理一遍相关知识，虽然还是有些细节并没有非常清楚。中间的思想部分确实是受益匪浅，尤其是技术Leader的修养那一章节，回想我在实验室的几次项目经历，愈发感受到一个好的技术Leader对整个项目团队的重要性，也希望我在之后的日子里能够成为我们小团队一个还不错的Leader吧。总之读这本书的收益远远超过我的预期，原本只是打算作为一个看上去比较有意义的消磨时间的事情，希望之后也能坚持下去。</p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/10/25/GAMES101-03-Transformation/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES101-03/image-20240709135729200.png">
+                </span>
+                <h6 class="trm-op-title">GAMES101-03-Transformation</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/10/25</li>
+                <li>10:45</li>
+                <li>GAMES101课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/08/02/GAMES101-01-Overview-of-Computer-Graphics/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES101-01/image-20240709140024706.png">
+                </span>
+                <h6 class="trm-op-title">GAMES101-01 Overview of Computer Graphics</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/08/02</li>
+                <li>23:11</li>
+                <li>GAMES101课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">阿曾</span>
+        </div>
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+    
+        <div class="trm-footer-item">
+            Welcome to my blog.
+        </div>
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="技艺部分"><a rel="nofollow" class="trm-toc-link" href="#技艺部分"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">技艺部分</span></a></li><li class="trm-toc-item trm-toc-level-3" title="思想"><a rel="nofollow" class="trm-toc-link" href="#思想"><span class="trm-toc-number">2.</span> <span class="trm-toc-text">思想</span></a></li><li class="trm-toc-item trm-toc-level-3" title="实践"><a rel="nofollow" class="trm-toc-link" href="#实践"><span class="trm-toc-number">3.</span> <span class="trm-toc-text">实践</span></a></li><li class="trm-toc-item trm-toc-level-3" title="读后感"><a rel="nofollow" class="trm-toc-link" href="#读后感"><span class="trm-toc-number">4.</span> <span class="trm-toc-text">读后感</span></a></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/plugins/typing.js?v=2.2.2"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/main.js?v=2.2.2"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>

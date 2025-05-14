@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="x5-fullscreen" content="true">
+<meta name="full-screen" content="yes">
+<meta name="theme-color" content="#317EFB" />
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=0" name="viewport">
+<meta name="description" content="Lecture 11 Surface Parameterization &amp; Surfaces Simplification 曲面参数化（又称曲面展开） 问题：给定一张曲面，如何找其二维的参数定义域？  参数化的应用：  地图绘制（地理学） 纹理映射 曲面绘画 大部分几何处理的基础（基本问题）  参数化期望保持的几何性质：  保角映射(angle‐preserving)：conformal（">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GAMES102-11-曲面参数化 &amp; 曲面简化">
+<meta property="og:url" content="https://spacezyx.github.io/2024/11/29/GAMES102-11-Surface-Parameterization/index.html">
+<meta property="og:site_name" content="Zeng">
+<meta property="og:description" content="Lecture 11 Surface Parameterization &amp; Surfaces Simplification 曲面参数化（又称曲面展开） 问题：给定一张曲面，如何找其二维的参数定义域？  参数化的应用：  地图绘制（地理学） 纹理映射 曲面绘画 大部分几何处理的基础（基本问题）  参数化期望保持的几何性质：  保角映射(angle‐preserving)：conformal（">
+<meta property="og:locale">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="og:image" content="https://spacezyx.github.io/404.jpg">
+<meta property="article:published_time" content="2024-11-29T06:52:35.000Z">
+<meta property="article:modified_time" content="2025-05-14T12:24:01.259Z">
+<meta property="article:author" content="阿曾">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://spacezyx.github.io/404.jpg">
+
+
+<title >GAMES102-11-曲面参数化 & 曲面简化</title>
+
+<!-- Favicon -->
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='16x16' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='icon' type='image/png' sizes='32x32' ></link>
+
+
+    <link href='/images/covers/avatar.jpg?v=2.2.2' rel='apple-touch-icon' sizes='180x180' ></link>
+
+
+    <link href='/site.webmanifest' rel='manifest' ></link>
+
+
+<!-- Plugin -->
+
+
+
+
+    
+<link rel="stylesheet" href="https://unpkg.com/hexo-theme-async@2.2.2/source/css/plugins/bootstrap.row.css">
+
+    
+<link rel="stylesheet" href="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.css">
+
+    
+    
+
+
+
+
+<!-- Icon -->
+
+    
+<link rel="stylesheet" href="/css/plugins/font-awesome.min.css">
+
+
+
+
+<!-- Variable -->
+<script>window.ASYNC_CONFIG = {"hostname":"spacezyx.github.io","author":"阿曾","root":"/","typed_text":["ZENG. WELCOME"],"theme_version":"2.2.2","theme":{"switch":true,"default":"style-dark"},"favicon":{"logo":"/images/covers/avatar.jpg","icon16":"/images/covers/avatar.jpg","icon32":"/images/covers/avatar.jpg","apple_touch_icon":null,"webmanifest":"/site.webmanifest","visibilitychange":true,"hidden":"failure.ico","show_text":"(/≧▽≦/)咦！又好了！","hide_text":"(●—●)喔哟，崩溃啦！","appleTouchIcon":"/images/covers/avatar.jpg","showText":"(/≧▽≦/)咦！又好了！","hideText":"(●—●)喔哟，崩溃啦！"},"i18n":{"placeholder":"搜索文章...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）","author":"本文作者：","copyright_link":"本文链接：","copyright_license_title":"版权声明：","copyright_license_content":"本博客所有文章除特别声明外，均默认采用 undefined 许可协议。","copy_success":"复制成功","copy_failure":"复制失败","open_read_mode":"进入阅读模式","exit_read_mode":"退出阅读模式","notice_outdate_message":"距离上次更新已经 undefined 天了, 文章内容可能已经过时。","sticky":"置顶","just":"刚刚","min":"分钟前","hour":"小时前","day":"天前","month":"个月前"},"swup":false,"plugin":{"flickr_justified_gallery":"https://unpkg.com/flickr-justified-gallery@latest/dist/fjGallery.min.js"},"icons":{"sun":"far fa-sun","moon":"far fa-moon","play":"fas fa-play","email":"far fa-envelope","next":"fas fa-arrow-right","calendar":"far fa-calendar-alt","clock":"far fa-clock","user":"far fa-user","back_top":"fas fa-arrow-up","close":"fas fa-times","search":"fas fa-search","reward":"fas fa-hand-holding-usd","user_tag":"fas fa-user-alt","toc_tag":"fas fa-th-list","read":"fas fa-book-reader","arrows":"fas fa-arrows-alt-h","double_arrows":"fas fa-angle-double-down","copy":"fas fa-copy"},"icontype":"font","highlight":{"plugin":"highlighjs","theme":true,"copy":true,"lang":true,"title":"default","height_limit":false},"toc":{"post_title":false},"live_time":{"start_time":"04/10/2024 23:00:00","prefix":"博客已萌萌哒运行 undefined 天"},"danmu":{"enable":false,"el":".trm-banner"},"covers":"/img/block.jpg","creative_commons":{"license":"by-nc-sa","language":"deed.zh"},"notice_outdate":{"enable":true,"style":"flat","limit_day":365,"position":"top"}};</script>
+<script id="async-page-config">window.PAGE_CONFIG = {"isPost":true,"isHome":false,"postUpdate":"2025-05-14 20:24:01"};</script>
+
+<!-- Theme mode css -->
+<link data-swup-theme rel="stylesheet" href="/css/index.css?v=2.2.2" id="trm-switch-style">
+<script>
+    let defaultMode = ASYNC_CONFIG.theme.default !=='auto' ?  ASYNC_CONFIG.theme.default : (window.matchMedia("(prefers-color-scheme: light)").matches ? 'style-light' : 'style-dark')
+    let catchMode = localStorage.getItem('theme-mode') || defaultMode;
+    let type = catchMode === 'style-dark' ? 'add' : 'remove';
+    document.documentElement.classList[type]('dark')
+</script>
+
+<!-- CDN -->
+
+
+    
+    
+
+
+
+<!-- Site Analytics -->
+
+ 
+<meta name="generator" content="Hexo 7.1.1"><style>mjx-container[jax="SVG"] {
+  direction: ltr;
+}
+
+mjx-container[jax="SVG"] > svg {
+  overflow: visible;
+}
+
+mjx-container[jax="SVG"][display="true"] {
+  display: block;
+  text-align: center;
+  margin: 1em 0;
+}
+
+mjx-container[jax="SVG"][justify="left"] {
+  text-align: left;
+}
+
+mjx-container[jax="SVG"][justify="right"] {
+  text-align: right;
+}
+
+g[data-mml-node="merror"] > g {
+  fill: red;
+  stroke: red;
+}
+
+g[data-mml-node="merror"] > rect[data-background] {
+  fill: yellow;
+  stroke: none;
+}
+
+g[data-mml-node="mtable"] > line[data-line] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > rect[data-frame] {
+  stroke-width: 70px;
+  fill: none;
+}
+
+g[data-mml-node="mtable"] > .mjx-dashed {
+  stroke-dasharray: 140;
+}
+
+g[data-mml-node="mtable"] > .mjx-dotted {
+  stroke-linecap: round;
+  stroke-dasharray: 0,140;
+}
+
+g[data-mml-node="mtable"] > svg {
+  overflow: visible;
+}
+
+[jax="SVG"] mjx-tool {
+  display: inline-block;
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+[jax="SVG"] mjx-tool > mjx-tip {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+mjx-tool > mjx-tip {
+  display: inline-block;
+  padding: .2em;
+  border: 1px solid #888;
+  font-size: 70%;
+  background-color: #F8F8F8;
+  color: black;
+  box-shadow: 2px 2px 5px #AAAAAA;
+}
+
+g[data-mml-node="maction"][data-toggle] {
+  cursor: pointer;
+}
+
+mjx-status {
+  display: block;
+  position: fixed;
+  left: 1em;
+  bottom: 1em;
+  min-width: 25%;
+  padding: .2em .4em;
+  border: 1px solid #888;
+  font-size: 90%;
+  background-color: #F8F8F8;
+  color: black;
+}
+
+foreignObject[data-mjx-xml] {
+  font-family: initial;
+  line-height: normal;
+  overflow: visible;
+}
+
+.MathJax path {
+  stroke-width: 3;
+}
+
+mjx-container[display="true"] {
+  overflow: auto hidden;
+}
+
+mjx-container[display="true"] + br {
+  display: none;
+}
+</style></head>
+
+<body>
+
+  <!-- app wrapper -->
+  <div class="trm-app-frame">
+
+    <!-- page preloader -->
+    <div class="trm-preloader">
+    <div class="trm-holder">
+        <div class="preloader">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+</div>
+    <!-- page preloader end -->
+
+    <!-- change mode preloader -->
+    <div class="trm-mode-swich-animation-frame">
+    <div class="trm-mode-swich-animation">
+        <i class="i-sun"><i class="iconfont far fa-sun"></i></i>
+        <div class="trm-horizon"></div>
+        <i class="i-moon"><i class="iconfont far fa-moon"></i></i>
+    </div>
+</div>
+    <!-- change mode preloader end -->
+
+      <!-- scroll container -->
+      <div id="trm-dynamic-content" class="trm-swup-animation">
+        <div id="trm-scroll-container" class="trm-scroll-container" style="opacity: 0">
+            <!-- top bar -->
+            <header class="trm-top-bar">
+	<div class="container">
+		<div class="trm-left-side">
+			<!-- logo -->
+<a href="/" class="trm-logo-frame trm-anima-link">
+    
+        <img alt="logo" src="/images/covers/avatar.jpg">
+    
+    
+        <div class="trm-logo-text">
+            曾<span>曾</span>
+        </div>
+    
+</a>
+<!-- logo end -->
+		</div>
+		<div class="trm-right-side">
+			<!-- menu -->
+<div class="trm-menu">
+    <nav>
+        <ul>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/" target="">
+                    首页
+                </a>
+                
+            </li>
+            
+            <li class="menu-item-has-children ">
+                <a  href="/archives/" target="">
+                    归档
+                </a>
+                
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+<!-- menu end -->
+			
+    <!-- mode switcher place -->
+    <div class="trm-mode-switcher-place">
+        <div class="trm-mode-switcher">
+            <i class="iconfont far fa-sun"></i>
+            <input class="tgl tgl-light" id="trm-swich" type="checkbox">
+            <label class="trm-swich" for="trm-swich"></label>
+            <i class="iconfont far fa-moon"></i>
+        </div>
+    </div>
+    <!-- mode switcher place end -->
+
+			
+		</div>
+		<div class="trm-menu-btn">
+			<span></span>
+		</div>
+	</div>
+</header>
+            <!-- top bar end -->
+
+            <!-- body -->
+            
+<div class="trm-content-start">
+    <!-- banner -->
+    <div class="trm-banner">
+    
+    <!-- banner cover -->
+    <img style="object-position:top;object-fit:cover;" alt="banner" class="trm-banner-cover" src="/img/banner.png">
+    <!-- banner cover end -->
+    
+
+    <!-- banner content -->
+    <div class="trm-banner-content trm-overlay">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-4"></div>
+                
+                <div class="col-lg-8">
+
+                    <!-- banner title -->
+                    <div class="trm-banner-text ">
+                        <div class="trm-label trm-mb-20">
+                            NEWS LETTER
+                        </div>
+                        <h1 class="trm-mb-30 trm-hsmb-font">
+                            GAMES102-11-曲面参数化 & 曲面简化
+                        </h1>
+
+                        
+                            <ul class="trm-breadcrumbs trm-label">
+                                <li>
+                                    <a href="/" class="trm-anima-link">Home</a>
+                                </li>
+                                <li>
+                                    <span>
+                                        2024
+                                    </span>
+                                </li>
+                            </ul>
+                        
+                    </div>
+                    <!-- banner title end -->
+
+                    <!-- scroll hint -->
+                    <span id="scroll-triger" class="trm-scroll-hint-frame">
+                        <div class="trm-scroll-hint"></div>
+                        <span class="trm-label">Scroll down</span>
+                    </span>
+                    <!-- scroll hint end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- banner content end -->
+</div>
+    <!-- banner end -->
+    <div class="container">
+        <div class="row">
+            
+                <div class="trm-page-sidebar col-lg-4 hidden-sm">
+                    <!-- main card -->
+                    <div class="trm-main-card-frame trm-sidebar">
+    <div class="trm-main-card"> 
+        <!-- card header -->
+<div class="trm-mc-header">
+    <div class="trm-avatar-frame trm-mb-20">
+        <img alt="Avatar" class="trm-avatar" src="/images/covers/avatar.jpg">
+    </div>
+    <h5 class="trm-name trm-mb-15">
+        阿曾
+    </h5>
+    
+        <div class="trm-label">
+            I`m
+            <span class="trm-typed-text">
+                <!-- Words for theme.user.typedText -->
+            </span>
+        </div>
+    
+</div>
+<!-- card header end -->
+        <!-- sidebar social -->
+
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<div class="trm-social">
+    
+        <a href="https://github.com/spacezyx" title="github" rel="nofollow" target="_blank">
+            <i class="iconfont fab fa-github"></i>
+        </a>
+    
+</div>
+
+<!-- sidebar social end -->
+        <!-- info -->
+<div class="trm-divider trm-mb-40 trm-mt-40"></div>
+<ul class="trm-table trm-mb-20">
+    
+        <li>
+            <div class="trm-label">
+                地址:
+            </div>
+            <div class="trm-label trm-label-light">
+                上海
+            </div>
+        </li>
+    
+        <li>
+            <div class="trm-label">
+                年龄:
+            </div>
+            <div class="trm-label trm-label-light">
+                24
+            </div>
+        </li>
+    
+</ul>
+<!-- info end -->
+
+        
+    <div class="trm-divider trm-mb-40 trm-mt-40"></div>
+    <!-- action button -->
+    <div class="text-center">
+        <a href="mailto:1292171824@qq.com" class="trm-btn">
+            联系我
+            <i class="iconfont far fa-envelope"></i>
+        </a>
+    </div>
+    <!-- action button end -->
+
+    </div>
+</div>
+                    <!-- main card end -->
+                </div>
+            
+            <div class="trm-page-content col-lg-8">
+                <div id="trm-content" class="trm-content">
+                    <div class="trm-post-info row hidden-sm">
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-calendar-alt trm-icon"></i><br>
+            05/14
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-clock trm-icon"></i><br>
+            20:24
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div id="post-author" class="trm-card trm-label trm-label-light text-center">
+            <i class="iconfont far fa-user trm-icon"></i><br>
+            阿曾
+        </div>
+    </div>
+</div>
+<div class="trm-card ">
+    <article id="article-container" class="trm-publication">
+    <h3 id="lecture-11-surface-parameterization-surfaces-simplification">Lecture
+11 Surface Parameterization &amp; Surfaces Simplification</h3>
+<p><strong>曲面参数化</strong>（又称曲面展开）</p>
+<p>问题：给定一张曲面，如何找其二维的参数定义域？</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241122135607048.png" alt="image-20241122135607048" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>参数化的应用：</p>
+<ul>
+<li>地图绘制（地理学）</li>
+<li>纹理映射</li>
+<li>曲面绘画</li>
+<li>大部分几何处理的基础（基本问题）</li>
+</ul>
+<p>参数化期望保持的几何性质：</p>
+<ul>
+<li>保角映射(angle‐preserving)：conformal（共形）</li>
+<li>保面积映射(area‐preserving)：authalic</li>
+<li>等距映射(isometric)：conformal + authalic</li>
+</ul>
+<p>等轴展开：</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128105538060.png" alt="image-20241128105538060" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>失真度量：</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128105631072.png" alt="image-20241128105631072" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>angle-preserving (conformal) ：<span class="math inline"><em>σ</em><sub>1</sub> = <em>σ</em><sub>2</sub></span></li>
+<li>area-preserving (authalic) ：<span class="math inline"><em>σ</em><sub>1</sub><em>σ</em><sub>2</sub> = 1</span></li>
+<li>length-preserving (isometric) :<mjx-container class="MathJax" jax="SVG"><svg style="vertical-align: -0.339ex;" xmlns="http://www.w3.org/2000/svg" width="7.884ex" height="1.846ex" role="img" focusable="false" viewBox="0 -666 3484.7 816"><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msub"><g data-mml-node="mi"></g><g data-mml-node="mn" transform="translate(33,-150) scale(0.707)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g><g data-mml-node="msub" transform="translate(714.3,0)"><g data-mml-node="mo"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mn" transform="translate(811,-150) scale(0.707)"><path data-c="32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"></path></g></g><g data-mml-node="mo" transform="translate(1928.9,0)"><path data-c="3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"></path></g><g data-mml-node="mn" transform="translate(2984.7,0)"><path data-c="31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"></path></g></g></g></svg></mjx-container></li>
+</ul>
+<p>曲面参数化的方法：</p>
+<p>Tutte’s embedding
+method：将三角剖分映射到<strong>凸边界</strong>内的方法。（适用于平面图（即可以嵌入到平面上的图）以及更一般的，嵌入到球面或其他曲面上的图）</p>
+<ol type="1">
+<li>面着色：首先，图的每个面都被分配一个颜色。在平面图中，通常使用两种颜色（双色）来确保相邻的面颜色不同。</li>
+<li>顶点标记：然后，根据相邻面的颜色，为每个顶点分配一个标记。这个标记可以是0、1或2，取决于相邻面颜色的变化。</li>
+<li>边的定向：接着，根据顶点的标记，为每条边分配一个方向。这个方向可以是正向或反向，取决于顶点标记的奇偶性。</li>
+<li>构建嵌入：最后，使用这些信息来构建图的嵌入。这涉及到在表面上放置顶点，并以一种方式绘制边，使得它们不相交，并且每个面的边界都由边正确地定义。</li>
+</ol>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128140344005.png" alt="image-20241128140344005" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Angle Based Flattening (ABF) &amp;
+ABF++：3D模型表面参数化的算法，它通过最小化角度失真来生成低失真的参数化结果。</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128140637955.png" alt="image-20241128140637955" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>As‐rigid‐as‐possible (ARAP)
+：3D模型表面参数化的算法，其核心思想是在保持局部区域尽可能刚性的同时，通过全局优化实现整体形状的变形。特别适用于需要保持模型局部细节的场合。</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128140731831.png" alt="image-20241128140731831" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Simplex
+Assembly：计算无翻转（inversion-free）映射的方法，它在保持低失真或有界失真的情况下，对单纯形网格进行处理。（单纯形分解（simplex
+disassembly）和单纯形组装（simplex assembly））</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128140821738.png" alt="image-20241128140821738" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128140932843.png" alt="image-20241128140932843" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>Bijective Parameterizations</strong></p>
+<p>一种在几何处理和计算机图形学中用于3D模型表面参数化的技术，其目标是创建一个全局单射（one-to-one）的映射，确保参数化过程中没有翻转或自我相交。</p>
+<ul>
+<li>Quasi‐Newton (QN)</li>
+<li>Scaffold</li>
+<li>Efficient Bijective Parameterizations</li>
+</ul>
+<p><strong>封闭曲面的割缝问题</strong></p>
+<p>一个封闭的表面不能被展平，需要一个切口将其切开成一个类似圆盘的区域。</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128141327301.png" alt="image-20241128141327301" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>最小生成树方法（Minimum Spanning Tree, MST）：</p>
+<ol type="1">
+<li>节点选择：在最小生成树方法中，节点（或顶点）通常选择具有高曲率或高失真的极值点。这些点在参数化过程中对于保持模型的细节和特征至关重要。</li>
+<li>最小生成树构建：构建一个图的最小生成树，该树连接所有选定的节点，且总边权重最小。在表面参数化的上下文中，边权重可以基于多种因素，如距离、角度失真或面积失真。</li>
+<li>展平策略：一旦构建了最小生成树，就可以使用它来指导表面展平的过程。一种常见的策略是将最小生成树的叶子节点（没有子节点的节点）展平，然后逐步向中心节点推进。</li>
+<li>减少失真：通过在最小生成树的基础上进行展平，可以减少全局失真，因为最小生成树倾向于保持局部结构的完整性。</li>
+</ol>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128141537947.png" alt="image-20241128141537947" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>纹理地图：多片参数化</strong></p>
+<p>多片参数化是一种纹理地图技术，它将模型表面分割成多个小片，每一片单独进行参数化，以减少单个参数化过程中的失真。</p>
+<p><strong>Atlas
+Generation</strong>（图集生成）是一个关键过程，它涉及到将模型表面分割成多个图表（charts），并将这些图表展平成2D区域。<strong>Minimizing
+Packing Efficiency (PE)</strong>
+是图集生成中的一个核心问题，它指的是在将这些2D图表紧凑地排列到一个矩形区域中时，如何最大化空间利用率，即最小化未使用的空间。</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128141824201.png" alt="image-20241128141824201" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128141859312.png" alt="image-20241128141859312" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>球面参数化</strong></p>
+<p>输入：亏格为0的封闭曲面（拓扑同胚于球面）</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128141930387.png" alt="image-20241128141930387" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Mapping between Mesh
+Surfaces：将一个3D模型的表面映射到另一个模型表面或者从模型表面映射到一个参数域。</p>
+<p>相容性网格（Compatible
+mesh）：一组具有相同连接关系且与给定模型形状近似的网格</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128142044514.png" alt="image-20241128142044514" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>总结：曲面参数化</p>
+<ul>
+<li>是一个从3D到2D的降维问题：将几何数据表达为图像</li>
+<li>Next: 大型场景的压缩、传输、调度、渲染…</li>
+</ul>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128142129480.png" alt="image-20241128142129480" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><strong>曲面简化</strong></p>
+<p>大规模网格数据在存储、传输、处理、渲染方面都存在着挑战。</p>
+<p>冗余数据：信息熵</p>
+<p>在不损失视觉效果的情况下减少数据量</p>
+<p>考量因素：Level of details (LOD)</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128142318756.png" alt="image-20241128142318756" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>曲面简化例子：</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128142341304.png" alt="image-20241128142341304" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128142357361.png" alt="image-20241128142357361" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>简化方法：</p>
+<ul>
+<li>几何对象：
+<ul>
+<li>顶点</li>
+<li>边</li>
+<li>面</li>
+</ul></li>
+<li>简化度量：
+<ul>
+<li>几何</li>
+<li>视觉：纹理、材质、法向……</li>
+</ul></li>
+</ul>
+<p>简化流程：</p>
+<ul>
+<li>一系列局部操作</li>
+<li>涉及邻近邻居 - 每次操作只影响小范围区域</li>
+<li>每次操作都会引入错误</li>
+<li>寻找并应用引入最小错误的操作</li>
+</ul>
+<p>简化方法：</p>
+<ul>
+<li>去除点</li>
+</ul>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128142806924.png" alt="image-20241128142806924" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>减少边：</li>
+</ul>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128142910704.png" alt="image-20241128142910704" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>减少三角形</li>
+</ul>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128142957505.png" alt="image-20241128142957505" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>顶点聚合</li>
+</ul>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128143024517.png" alt="image-20241128143024517" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>顶点集聚合</li>
+</ul>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128143049414.png" alt="image-20241128143049414" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<ul>
+<li>顶点聚类</li>
+</ul>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128143118078.png" alt="image-20241128143118078" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>Error Control：</p>
+<ul>
+<li>局部错误：将新区域与前一次迭代进行比较
+<ul>
+<li>快速</li>
+<li>累积错误</li>
+<li>不占用内存</li>
+</ul></li>
+<li>全局错误：将新区域与原始网格进行比较
+<ul>
+<li>慢速</li>
+<li>更好的质量控制</li>
+<li>可以用作终止条件</li>
+<li>必须在整个算法过程中记住原始网格</li>
+</ul></li>
+</ul>
+<p>局部简化策略：重复执行以下步骤</p>
+<ul>
+<li>选择误差最小的元素。</li>
+<li>执行简化操作（移除/收缩）。</li>
+<li>更新误差（局部/全局）。</li>
+<li>直到达到所需的网格大小/质量。</li>
+</ul>
+<p>度量标准：</p>
+<ul>
+<li>平面距离（Distance to plane）：简化后的面与原始面之间的距离。</li>
+<li>曲率（Curvature）：简化对模型表面曲率的影响。</li>
+<li>通常使用近似方法来计算这些度量。</li>
+<li>平均平面（Average plane）：用于近似计算的平面。</li>
+<li>离散曲率（Discrete curvature）：使用公式
+Σa/2πΣ<em>a</em>/2<em>π</em> 来计算，其中 a<em>a</em>
+代表围绕顶点的角度总和。</li>
+</ul>
+<p>全局简化策略：</p>
+<p>Mesh Re-tiling（网格重铺）：</p>
+<ul>
+<li>目标：通过引入新的“非均匀分布”的顶点来简化和改善网格。</li>
+<li>方法：重铺尝试在保持网格整体结构的同时，减少顶点数量并优化网格质量。</li>
+</ul>
+<p>Mesh Optimization（网格优化）：</p>
+<ul>
+<li><p>框架：将简化过程视为一个优化问题</p></li>
+<li><p>能量函数：最小化某个能量函数</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128144057631.png" alt="image-20241128144057631" style="zoom:50%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p></li>
+<li><p>评估：在改变前后评估，接受那些降低能量的更改</p></li>
+</ul>
+<p><strong>Level of Detail (LOD)</strong></p>
+<p>多分辨率表示：</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128144244578.png" alt="image-20241128144244578" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128144259779.png" alt="image-20241128144259779" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128144316708.png" alt="image-20241128144316708" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>离散LOD：</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128144341764.png" alt="image-20241128144341764" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>连续LOD：</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128144402746.png" alt="image-20241128144402746" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>网格简化过程：</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128144606646.png" alt="image-20241128144606646" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>反向：</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128144552156.png" alt="image-20241128144552156" style="zoom:67%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128144619067.png" alt="image-20241128144619067" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+<p>View‐Dependent LOD
+基于视景的LOD：以比远处部分更高的分辨率显示物体附近的部分。</p>
+<p><img src="/images/GAMES-11-Surface-Parameterization/image-20241128144728730.png" alt="image-20241128144728730" style="zoom:80%;"  data-tag='post-image' loading="lazy" onerror='this.onerror=null;this.src="/404.jpg"'></p>
+
+</article>
+    
+    
+
+</div>
+<div class="trm-post-next-prev row">
+    <div class="col-lg-12">
+        <!-- title -->
+        <h5 class="trm-title-with-divider">
+            其他文章
+            <span data-number="02"></span>
+        </h5>
+    </div>
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/11/29/GAMES102-12-Geometric-Mapping/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES-12-Geometric-Mapping/image-20241128145051806.png">
+                </span>
+                <h6 class="trm-op-title">GAMES102-12-几何映射 &amp; 几何优化</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/11/29</li>
+                <li>14:56</li>
+                <li>GAMES102课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+    
+        <div class="col-lg-6">
+    <div class="trm-older-publications-card trm-scroll-animation trm-active-el">
+        <div class="trm-older-publication">
+            
+            <a class="trm-op-top trm-anima-link" href="/2024/11/21/GAMES102-10-Sampling/">
+                <span class="trm-op-cover">
+                    <img alt="cover" class="no-fancybox" src="/images/GAMES102-10-Sampling/image-20241121144534385.png">
+                </span>
+                <h6 class="trm-op-title">GAMES102-10-曲面去噪&amp;采样与剖分</h6>
+            </a>
+            <div class="trm-divider trm-mb-15 trm-mt-20"></div>
+            <ul class="trm-card-data trm-label">
+                <li>24/11/21</li>
+                <li>20:14</li>
+                <li>GAMES102课程笔记</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+</div>
+
+    
+
+
+
+                    <div class="trm-divider footer-divider"></div>
+
+                    <!-- footer -->
+                    <footer class="trm-footer-card trm-scroll-animation">
+
+    
+
+    
+        <div class="trm-footer-item">
+            <span>© 2024- 2025</span>
+            <span class="footer-separator"data-separator=" · "></span>
+            <span class="trm-accent-color">阿曾</span>
+        </div>
+    
+
+      
+
+    
+        <div class="trm-footer-item blog-run-long"></div>
+     
+
+    
+        <div class="trm-footer-item">
+            Welcome to my blog.
+        </div>
+     
+</footer>
+                    <!-- footer end -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- body end -->
+
+            
+
+    <div id="post-toc" class="trm-post-toc">
+      <div class="trm-post-toc-header">
+        目录导航
+				<span id="post-toc-top">
+					置顶
+				</span>
+      </div>
+      <div class="trm-post-toc-content">
+        <ol class="trm-toc"><li class="trm-toc-item trm-toc-level-3" title="Lecture
+11 Surface Parameterization &amp; Surfaces Simplification"><a rel="nofollow" class="trm-toc-link" href="#lecture-11-surface-parameterization-surfaces-simplification"><span class="trm-toc-number">1.</span> <span class="trm-toc-text">Lecture
+11 Surface Parameterization &amp; Surfaces Simplification</span></a></li></ol>
+      </div>
+    </div>
+
+            
+<div class="trm-fixed-container">
+    
+        <div class="trm-fixed-btn post-toc-btn" data-title="目录">
+            <i class="iconfont fas fa-th-list"></i>
+        </div>
+    
+    
+        <div class="trm-fixed-btn" data-title="阅读模式" onclick="asyncFun.switchReadMode()">
+            <i class="iconfont fas fa-book-reader"></i>
+        </div>
+    
+    
+    <div id="trm-back-top" class="trm-fixed-btn" data-title="回到顶部">
+        <i class="iconfont fas fa-arrow-up"></i>
+    </div>
+</div>
+        </div>
+      </div>
+      <!-- scroll container end -->
+  </div>
+  <!-- app wrapper end -->
+
+  
+  <!-- Plugin -->
+
+
+
+
+    
+    
+<script src="https://unpkg.com/@fancyapps/ui@4.0/dist/fancybox.umd.js"></script>
+
+    
+
+    
+        <script src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/plugins/typing.js?v=2.2.2"></script>
+    
+
+    
+
+    <!-- 数学公式 -->
+    
+
+    <!-- 评论插件 -->
+    
+        
+
+        
+    
+
+		
+
+
+
+
+    <!-- Service Worker -->
+    
+    <!-- baidu push -->
+    
+
+
+<script id="async-script" src="https://unpkg.com/hexo-theme-async@2.2.2/source/js/main.js?v=2.2.2"></script>
+
+<!-- CDN -->
+
+
+    
+
+    
+
+    
+
+
+
+</body>
+
+</html>
